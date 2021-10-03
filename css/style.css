@@ -140,6 +140,7 @@ footer a {
     color: #49c1a2;
 }
 
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -161,4 +162,65 @@ footer a {
     .team img {
         width: 70%;
     }
+}
+
+
+
+
+
+
+/*Adam S Asimolowo 
+
+CSS code for password toggler and for strength password meter*/
+
+.password_toggler{
+    position: relative;
+    line-height: 20px;
+    width: 20px;
+    left: 280px;
+    bottom: 28px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.password_toggler i.fa-eye-slash{
+    display: none;
+}
+
+.password_toggler.active i.fa-eye-slash{
+    display: block;
+}
+
+.password_toggler.active i.fa-eye{
+    display: none;
+}
+
+
+.form-group .password_strength{
+    text-align: center;
+    position: relative;
+    background-color: #f2f2f2 ;
+    top: 2px;
+    display: none;
+}
+
+.password_strength span:nth-child(1){
+    color: black;
+    font-size: 15px;
+    z-index: 2;
+    font-weight:bold;
+    color:yell
+}
+
+.password_strength span:nth-child(2){
+    position: absolute; 
+    top: 0px;
+    left: 0px;
+    width: 0%;
+    height: 100%;
+    border-radius: 5px;
+    z-index: 1;
+    transition: all 300ms ease-in-out;
+    background: black;
+    opacity: 60%;
 }

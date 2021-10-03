@@ -8,6 +8,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
+ 
     <title>Form Styling</title>
     <link
       href="https://fonts.googleapis.com/css?family=Raleway"
@@ -38,7 +39,7 @@
         <form>
           <div class="form-group">
             <label for="first-name">First Name</label>
-            <input type="text" name="firstName" id="first-name" />
+            <input type="text" name="firstName" id="first-name"/>
           </div>
           <div class="form-group">
             <label for="last-name">Last Name</label>
@@ -50,11 +51,17 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" />
+            <input type="password" name="password" id="password"/>
           </div>
           <div class="form-group">
             <label for="password2">Confirm Password</label>
-            <input type="password" name="pasword2" id="password2" />
+            <input type="password" name="pasword2" id="password2"/>
+            
+            <div class = "password_strength">
+              <span>Strength: Neutral</span>
+              <span></span>
+            </div>
+
           </div>
           <button type="submit" class="btn">Sign Up</button>
           <p class="bottom-text">
@@ -67,6 +74,9 @@
       <footer>
         <p>Already have an account? <a href="login-form.html">Login Here</a></p>
       </footer>
+
     </div>
+
+    <script src="index.js"></script>
   </body>
 </html>
