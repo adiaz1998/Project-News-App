@@ -183,15 +183,15 @@ CSS code for password toggler and for strength password meter*/
     text-align: center;
 }
 
-.password_toggler i.fa-eye-slash{
+.password_toggler i.fa-eye{
     display: none;
 }
 
-.password_toggler.active i.fa-eye-slash{
+.password_toggler.active i.fa-eye{
     display: block;
 }
 
-.password_toggler.active i.fa-eye{
+.password_toggler.active i.fa-eye-slash{
     display: none;
 }
 
