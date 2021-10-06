@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from flaskext.mysql import MySQL
-from user import registerUser
+from user import registerUser, signIn
 
 app = Flask(__name__)
 
@@ -14,17 +14,25 @@ app.config['MYSQL_DATABASE_DB'] = 'SP_login'
 
 mysql = MySQL(app)
 
-@app.route('/')
-def index():
+
+@app.route('/signup-form.html')
+def signup_form():
     return render_template("signup-form.html")
+
+
+@app.route('/login-form.html')
+def login_form():
+    return render_template("login-form.html")
+
 
 @app.route("/register", methods=['POST'])
 def register():
     return registerUser(mysql)
 
+
 @app.route("/login", methods=['POST'])
 def login():
-    pass
+    return signIn(mysql)
 
 
 if __name__ == '__main__':
