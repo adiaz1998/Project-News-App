@@ -1,5 +1,3 @@
-
-
 console.log("testing testing")
 
 function getPasswordStrength(password){
@@ -87,3 +85,6 @@ password_box.addEventListener("keyup", function(e){ //keyup = keys being pressed
         passwordStrengthSpan[1].style.background = "#008000"
    } 
 })
+
+
+

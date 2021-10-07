@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <title>Log in</title>
     <link
       href="https://fonts.googleapis.com/css?family=Raleway"
@@ -35,14 +35,14 @@
       <div class="form-wrap">
         <h1>SP News</h1>
         <p>Log in to your SP News account</p>
-        <form>
+        <form action="http://127.0.0.1:5000/login" method="post">
           <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" />
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password_sign_in" />
+            <input type="password" name="password" id="password" />
 
             <div class = password_toggler>
 
@@ -52,6 +52,9 @@
             </div>
           </div>
           <button class="log in" type="submit" class="btn">Log in</button>
+          <div>
+            <p>{{ data }}</p>
+          </div>
         </form>
       </div>
       <footer>
@@ -59,6 +62,6 @@
       </footer>
 
     </div>
-    <script src="index.js"></script>
+    <script src="../static/js/index.js"></script>
   </body>
 </html>
