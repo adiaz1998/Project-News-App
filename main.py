@@ -15,14 +15,19 @@ app.config['MYSQL_DATABASE_DB'] = 'SP_login'
 mysql = MySQL(app)
 
 
-@app.route('/signup-form.html')
-def signup_form():
-    return render_template("signup-form.html")
+@app.route('/')
+def index():
+    return render_template("login-form.html")
 
 
 @app.route('/login-form.html')
 def login_form():
     return render_template("login-form.html")
+
+
+@app.route('/signup-form.html')
+def signup_form():
+    return render_template("signup-form.html")
 
 
 @app.route("/register", methods=['POST'])
