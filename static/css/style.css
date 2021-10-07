@@ -140,7 +140,6 @@ footer a {
     color: #49c1a2;
 }
 
-
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -165,15 +164,10 @@ footer a {
 }
 
 
-
-
-
-
-/*Adam S Asimolowo 
-
+/*Adam S Asimolowo
 CSS code for password toggler and for strength password meter*/
 
-.password_toggler{
+.password_toggler {
     position: relative;
     line-height: 20px;
     width: 20px;
@@ -183,37 +177,81 @@ CSS code for password toggler and for strength password meter*/
     text-align: center;
 }
 
-.password_toggler i.fa-eye{
+.password_toggler i.fa-eye {
     display: none;
 }
 
-.password_toggler.active i.fa-eye{
+.password_toggler.active i.fa-eye {
     display: block;
 }
 
-.password_toggler.active i.fa-eye-slash{
+.password_toggler.active i.fa-eye-slash {
     display: none;
 }
 
+.password_toggler_reg {
+    position: relative;
+    line-height: 20px;
+    width: 20px;
+    left: 280px;
+    bottom: 28px;
+    cursor: pointer;
+    text-align: center;
+}
 
-.form-group .password_strength{
+.password_toggler_reg i.fa-eye {
+    display: none;
+}
+
+.password_toggler_reg.active1 i.fa-eye {
+    display: block;
+}
+
+.password_toggler_reg.active1 i.fa-eye-slash {
+    display: none;
+}
+
+.password_toggler_2 {
+    position: relative;
+    line-height: 20px;
+    width: 20px;
+    left: 280px;
+    bottom: 28px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.password_toggler_2 i.fa-eye {
+    display: none;
+}
+
+.password_toggler_2.active i.fa-eye {
+    display: block;
+}
+
+.password_toggler_2.active i.fa-eye-slash {
+    display: none;
+}
+
+.form-group .password_strength {
     text-align: center;
     position: relative;
-    background-color: #f2f2f2 ;
-    top: 2px;
+    background-color: #f2f2f2;
+    top: -18px;
     display: none;
+    height: auto;
 }
 
-.password_strength span:nth-child(1){
+.password_strength span:nth-child(1) {
     color: black;
     font-size: 15px;
     z-index: 2;
-    font-weight:bold;
-    color:yell
+    font-weight: bold;
+    color: yell
 }
 
-.password_strength span:nth-child(2){
-    position: absolute; 
+.password_strength span:nth-child(2) {
+    position: absolute;
     top: 0px;
     left: 0px;
     width: 0%;
@@ -223,4 +261,39 @@ CSS code for password toggler and for strength password meter*/
     transition: all 300ms ease-in-out;
     background: black;
     opacity: 60%;
+}
+
+.strong_password_tip {
+    /* We only want this class to display when a user/client has clicked on the password element */
+    position: relative;
+    bottom: 40px;
+    left: 340px;
+    height: 0px;
+    display: none;
+}
+
+.strong_password_tip p {
+    font-weight: bold;
+    color: #fff;
+    font-size: smaller;
+}
+
+.validation_email {
+    font-weight: bold;
+    height: auto;
+    font-size: 13.5px;
+}
+
+.validation_email .invalid {
+    color: red;
+}
+
+.validation_email .valid {
+    color: green;
+}
+
+.confirm_password {
+    display: none;
+    font-size: 15px;
+    font-weight: bold;
 }
