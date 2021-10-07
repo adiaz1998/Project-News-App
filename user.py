@@ -30,7 +30,8 @@ class User:
 def registerUser(db):
     data = ""
     if request.method == 'POST' and request.form.get("firstName") and request.form.get("lastName") \
-            and request.form.get("username") and request.form.get("password") and request.form.get("email"):
+            and request.form.get("username") and request.form.get("password") and request.form.get("password2") \
+            and request.form.get("email"):
         first_name = request.form['firstName']
         last_name = request.form['lastName']
         username = request.form['username']
