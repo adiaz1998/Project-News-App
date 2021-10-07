@@ -1,3 +1,4 @@
+
 from flask import request, render_template, session
 import pymysql
 from passlib.hash import sha256_crypt
@@ -64,7 +65,7 @@ def registerUser(db):
 
 def signIn(db):
     msg = ""
-    if request.method == 'POST' and request.form.get("username") and request.form.get("password"):
+    if request.method == 'POST' and request.form.get("username") and request.form.get("password"): #flask utilizes the 'name' property rather than the 'id' property when getting form information
         username = request.form['username']
         password = request.form['password']
         user = User.validateIfFieldExist(db, username, "username")
@@ -82,7 +83,3 @@ def signIn(db):
     else:
         data = "The server has encountered a situation it does not know how to handle."
         return render_template('signup-form.html', data=data), 500
-
-
-
-
