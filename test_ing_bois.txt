@@ -1,2 +1,2 @@
 lol breh
-testing using git with CLI
+tested using git with CLI
