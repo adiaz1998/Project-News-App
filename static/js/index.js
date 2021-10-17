@@ -23,9 +23,7 @@ if (toggle_button) {
             // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
             el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
         }
-
     }
-
 }
 
 toggle_button_2.addEventListener("click", function() {
@@ -61,11 +59,13 @@ function toggle_on_off() {
 
 }
 
-
 //function for getting passwordStrength
 function getPasswordStrength(password) {
     let s = 0;
 
+    if (password.length == 0) {
+        s = 0;
+    }
     if (password.length > 4) {
         s++;
     }
@@ -88,13 +88,12 @@ function getPasswordStrength(password) {
     return s;
 }
 
-
 //code for displaying strength meter
 var sign_up_password_box = document.querySelector(".form-group #password")
 var sign_up_password_box_2 = document.querySelector(".form-group #password2")
 
 if (sign_up_password_box) {
-    sign_up_password_box.addEventListener("click", function() { //focus concentrates on whether or not 
+    sign_up_password_box.addEventListener("click", function() { //focus concentrates on whether or not
         console.log("are you even working // FOCUSING ON PASSWORD BOX")
         document.querySelector(".form-group .password_strength").style.display = "block";
         //document.querySelector(".form-group .password_strength").height = "0px";
@@ -106,7 +105,7 @@ if (sign_up_password_box) {
 
 if (sign_up_password_box) {
 
-    sign_up_password_box.addEventListener("keyup", function(e) { //keyup = keys being pressed 
+    sign_up_password_box.addEventListener("keyup", function(e) { //keyup = keys being pressed
         let password = e.target.value;
         let strength = getPasswordStrength(password)
         let passwordStrengthSpan = document.querySelectorAll(".form-group .password_strength span")
@@ -117,11 +116,17 @@ if (sign_up_password_box) {
             passwordStrengthSpan[0].innerText = "Strength: Weak";
             passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#d13636";
+
         } else if (strength >= 2 && strength <= 4) {
 
             passwordStrengthSpan[0].innerText = "Strength: Medium";
             passwordStrengthSpan[1].style.color = "#111"
             passwordStrengthSpan[1].style.background = "#ffff00";
+
+        } else if (strength == 0) {
+            passwordStrengthSpan[0].innerText = "Strength: Neutral";
+            passwordStrengthSpan[1].style.color = "#111"
+            passwordStrengthSpan[1].style.background = "#f2f2f2";
 
         } else {
             passwordStrengthSpan[0].innerText = "Strength: Strong";
@@ -131,6 +136,30 @@ if (sign_up_password_box) {
     });
 }
 
+//checking for password length (MADE CHANGES TO THIS ON 10/9/2021)
+if (sign_up_password_box) {
+
+    sign_up_password_box.addEventListener("keyup", check_for_password_length)
+
+    function check_for_password_length() {
+        const pass_length = document.getElementById("password").value.length;
+        console.log("Password length: " + pass_length + " characters");
+        if (pass_length != null && pass_length == 0) {
+
+            console.log("entered second block ")
+            let passwordStrengthSpan = document.querySelectorAll(".form-group .password_strength span");
+            passwordStrengthSpan[0].innerText = "Strength: Neutral";
+            passwordStrengthSpan[1].style.background = "none";
+
+        }
+    }
+
+}
+//JS NOTES: var declarations are globally scoped or function scoped while let and const are block scoped. 
+//var variables can be updated and re-declared within its scope; let variables can be updated but not re-declared; 
+//const variables can neither be updated nor re-declared. They are all hoisted to the top of their scope
+
+//What is a block? A block is a chunk of code bounded by {}. A block lives in curly braces. Anything within curly braces is a block.
 
 
 //code for showing password strength tip
@@ -149,10 +178,11 @@ if (sign_up_password_box) {
     });
 
 }
-//code for confirming two passwords are equal to each other
 //document.querySelector(".form-group #password").addEventListener("mouseout", get_password);
 
-
+//code for confirming two passwords are equal to each other
+//(MADE CHANGES TO THIS ON 10/9/2021)
+sign_up_password_box.addEventListener("keyup", check_for_similar_passwords)
 sign_up_password_box_2.addEventListener("keyup", check_for_similar_passwords)
 
 function check_for_similar_passwords() {
@@ -168,6 +198,7 @@ function check_for_similar_passwords() {
         //document.querySelector(".form-group .password_strength").style.display = "none";
         document.querySelector('.btn').disabled = false;
         document.querySelector('.btn').style.display = "block";
+        document.querySelector(".form-group .password_strength").style.display = "block";
 
     } else {
         console.log("Please make sure your passwords equal each other")
@@ -188,7 +219,3 @@ function check_for_similar_passwords() {
         }
     }
 }
-
-
-
-

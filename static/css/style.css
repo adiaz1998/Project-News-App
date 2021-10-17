@@ -168,6 +168,14 @@ footer a {
 
 CSS code for password toggler and for strength password meter*/
 
+input[type="text"] {
+    font-family: "Raleway", sans-serif;
+}
+
+input[type="email"] {
+    font-family: "Raleway", sans-serif;
+}
+
 .password_toggler {
     position: relative;
     line-height: 20px;
