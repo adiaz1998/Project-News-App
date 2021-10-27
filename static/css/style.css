@@ -297,3 +297,9 @@ CSS code for password toggler and for strength password meter*/
     font-size: 15px;
     font-weight: bold;
 }
+
+.email_validator_text{
+    color: red;
+    display: none;
+    font-weight: bold;
+}

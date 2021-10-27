@@ -117,16 +117,20 @@ if (sign_up_password_box) {
             passwordStrengthSpan[0].innerText = "Strength: Weak";
             passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#d13636";
+            document.querySelector('.btn').style.display = "none";
         } else if (strength >= 2 && strength <= 4) {
 
             passwordStrengthSpan[0].innerText = "Strength: Medium";
-            passwordStrengthSpan[1].style.color = "#111"
+            passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#ffff00";
+            document.querySelector('.btn').style.display = "none";
 
         } else {
             passwordStrengthSpan[0].innerText = "Strength: Strong";
-            passwordStrengthSpan[1].style.color = "#111"
-            passwordStrengthSpan[1].style.background = "#008000"
+            passwordStrengthSpan[1].style.color = "#111";
+            passwordStrengthSpan[1].style.background = "#008000";
+            document.querySelector('.btn').style.display = "block";
+
         }
     });
 }
@@ -190,4 +194,28 @@ function check_for_similar_passwords() {
 }
 
 
+//code for validating email
 
+var email_box = document.querySelector(".form-group #email")
+if(email_box){
+    email_box.addEventListener("keyup", function() {
+        const email_content = document.getElementById('email').value
+
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)){
+            document.querySelector(".email_validator_text").style.display = "none";
+            document.querySelector('.btn').style.display = "block";
+            console.log("valid email address")
+        }
+        else{
+            console.log("invalid email address")
+            document.querySelector(".email_validator_text").style.display = "block";
+            document.querySelector('.btn').style.display = "none";
+        }
+        console.log(email_content)
+    });
+
+}
+
+
+
+var sign_up_password_box = document.querySelector(".form-group #password")

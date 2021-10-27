@@ -31,6 +31,7 @@
         </div>
     </header>
 
+
     <!-- Sign-Up -->
     <div id="container">
         <div class="form-wrap">
@@ -52,6 +53,10 @@
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email" />
+                </div>
+
+                <div class = "email_validator_text">
+                    <p>Invalid Email Address</p>
                 </div>
 
                 <div class="form-group">
@@ -94,7 +99,9 @@
 
                 <button type="submit" class="btn">Sign Up</button>
 
-                <p>{{ data }}</p>
+                <div>
+                    <p style="font-weight: bold;">{{ data }}</p>
+                </div>
 
                 <p class="bottom-text">
                     By clicking the Sign Up button, you agree to our
