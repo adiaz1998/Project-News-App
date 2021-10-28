@@ -1,9 +1,10 @@
 from flask import request, render_template, session
+from flask_login import login_user, UserMixin
 import pymysql
 from passlib.hash import sha256_crypt
 
 
-class User:
+class User(UserMixin):
     def __init__(self, _id, first_name, last_name, username, password, email):
         self.id = _id
         self.first_name = first_name
@@ -11,6 +12,18 @@ class User:
         self.username = username
         self.password = password
         self.email = email
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id).encode(encoding='UTF-8', errors='strict')
 
     @classmethod
     def validateIfFieldExist(cls, db, input, field):
@@ -24,6 +37,34 @@ class User:
         else:
             user = None
         connection.close()
+        return user
+
+    @classmethod
+    def get_user(cls, db, input, field):
+        if input == "user_id":
+            input = int(input)
+        else:
+            input = str(input)
+
+        connection = db.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        query = "SELECT * FROM users WHERE " + field + " = %s"
+        cursor.execute(query, (input,))
+        user = cursor.fetchone()
+
+        connection.close()
+
+        try:
+            # A simpler way to map row names to row values in a dictionary
+            user = dict(zip(cursor.description, user))
+            user = cls(int(user['id']),
+                       user['first_name'],
+                       user['last_name'],
+                       user['username'],
+                       user['password'])
+        except Exception:
+            user = None
+
         return user
 
 
@@ -69,11 +110,12 @@ def signIn(db):
         username = request.form['username']
         password = request.form['password']
         user = User.validateIfFieldExist(db, username, "username")
-        if user and sha256_crypt.verify(password,user.password):
-            session['logged_in'] = True
-            session['username'] = request.form['username']
+        if user and sha256_crypt.verify(password, user.password):
+            # Login and validate user
+            login_user(user, remember=True)
             msg = "Successfully logged in!"
-            return render_template("login-form.html", data=msg), 200
+            return userProfile(username, db), 200
+            #return render_template("login-form.html", data=msg), 200
         else:
             msg = "Error. Invalid username or password"
             return render_template("login-form.html", data=msg), 401
@@ -85,5 +127,7 @@ def signIn(db):
         return render_template('signup-form.html', data=data), 500
 
 
-
+def userProfile(username, db):
+    user = User.get_user(db, username, "username")
+    return render_template("account.html", user=user)
 

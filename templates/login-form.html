@@ -58,6 +58,9 @@
         <footer>
             <p>Don't have an account? <a href="signup-form.html">Sign Up</a></p>
         </footer>
+        {% if current_user.is_authenticated %}
+             Hi {{ current_user.username }}!
+        {% endif %}
 
     </div>
     <script src="../static/js/index.js"></script>

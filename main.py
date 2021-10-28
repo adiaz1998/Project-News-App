@@ -1,6 +1,8 @@
+import login as login
 from flask import Flask, render_template
+from flask_login import login_required, LoginManager, current_user
 from flaskext.mysql import MySQL
-from user import registerUser, signIn
+from user import registerUser, signIn, User, userProfile
 
 app = Flask(__name__)
 
@@ -13,6 +15,15 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'blue0918'
 app.config['MYSQL_DATABASE_DB'] = 'SP_login'
 
 mysql = MySQL(app)
+
+login_manager = LoginManager()
+login.login_view = 'login'
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_user(mysql, user_id, "id")
 
 
 @app.route('/')
@@ -38,6 +49,12 @@ def register():
 @app.route("/login", methods=['POST'])
 def login():
     return signIn(mysql)
+
+
+@app.route("/user/<string:username>", methods=['GET'])
+@login_required
+def user():
+    return userProfile(current_user.username, mysql)
 
 
 if __name__ == '__main__':
