@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<table>
+    <tr valign="top">
+        <td><h1>Username: {{ current_user.username }}</h1></td>
+        <td><h1>First Name: {{ current_user.first_name }}</h1></td>
+        <td><h1>Last Name: {{ current_user.last_name }}</h1></td>
+    </tr>
+</table>
+{% endblock %}

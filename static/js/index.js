@@ -1,6 +1,3 @@
-console.log("testing connection between server and client")
-
-
 var toggle_button = document.querySelector(".form-group .password_toggler")
 var toggle_button_2 = document.querySelector(".form-group .password_toggler_reg")
 var toggle_button_3 = document.querySelector(".form-group .password_toggler_2")
@@ -19,7 +16,6 @@ if (toggle_button) {
         } else {
             console.log("Show password clicked")
             document.getElementById('password_sign_in').setAttribute("type", "text")
-
             // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
             el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
         }
@@ -61,11 +57,29 @@ function toggle_on_off() {
 
 //function for getting passwordStrength
 function getPasswordStrength(password) {
+toggle_button_3.addEventListener("click", toggle_on_off)
+    //toggle_button2.addEventListener("click", toggle_on_off(".form-group", ".password_toggler_reg"))
+function toggle_on_off() {
+    let el = toggle_button_3;
+    if (el.classList.contains("active")) {
+        console.log("Hide password clicked")
+        document.getElementById('password2').setAttribute("type", "password")
+        el.classList.remove("active") //remove a class list from the element (.form-group .password_toggler)
+    } else {
+        console.log("Show password clicked")
+        document.getElementById('password2').setAttribute("type", "text")
+
+        // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+        el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
+    }
+  }
+}
+
+
+//function for getting passwordStrength
+function getPasswordStrength(password) {
     let s = 0;
 
-    if (password.length == 0) {
-        s = 0;
-    }
     if (password.length > 4) {
         s++;
     }
@@ -87,6 +101,7 @@ function getPasswordStrength(password) {
 
     return s;
 }
+
 
 //code for displaying strength meter
 var sign_up_password_box = document.querySelector(".form-group #password")
@@ -116,50 +131,24 @@ if (sign_up_password_box) {
             passwordStrengthSpan[0].innerText = "Strength: Weak";
             passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#d13636";
-
+            document.querySelector('.btn').style.display = "none";
         } else if (strength >= 2 && strength <= 4) {
 
             passwordStrengthSpan[0].innerText = "Strength: Medium";
-            passwordStrengthSpan[1].style.color = "#111"
+            passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#ffff00";
-
-        } else if (strength == 0) {
-            passwordStrengthSpan[0].innerText = "Strength: Neutral";
-            passwordStrengthSpan[1].style.color = "#111"
-            passwordStrengthSpan[1].style.background = "#f2f2f2";
+            document.querySelector('.btn').style.display = "none";
 
         } else {
             passwordStrengthSpan[0].innerText = "Strength: Strong";
-            passwordStrengthSpan[1].style.color = "#111"
-            passwordStrengthSpan[1].style.background = "#008000"
+            passwordStrengthSpan[1].style.color = "#111";
+            passwordStrengthSpan[1].style.background = "#008000";
+            document.querySelector('.btn').style.display = "block";
+
         }
     });
 }
 
-//checking for password length (MADE CHANGES TO THIS ON 10/9/2021)
-if (sign_up_password_box) {
-
-    sign_up_password_box.addEventListener("keyup", check_for_password_length)
-
-    function check_for_password_length() {
-        const pass_length = document.getElementById("password").value.length;
-        console.log("Password length: " + pass_length + " characters");
-        if (pass_length != null && pass_length == 0) {
-
-            console.log("entered second block ")
-            let passwordStrengthSpan = document.querySelectorAll(".form-group .password_strength span");
-            passwordStrengthSpan[0].innerText = "Strength: Neutral";
-            passwordStrengthSpan[1].style.background = "none";
-
-        }
-    }
-
-}
-//JS NOTES: var declarations are globally scoped or function scoped while let and const are block scoped. 
-//var variables can be updated and re-declared within its scope; let variables can be updated but not re-declared; 
-//const variables can neither be updated nor re-declared. They are all hoisted to the top of their scope
-
-//What is a block? A block is a chunk of code bounded by {}. A block lives in curly braces. Anything within curly braces is a block.
 
 
 //code for showing password strength tip
@@ -178,10 +167,10 @@ if (sign_up_password_box) {
     });
 
 }
+//code for confirming two passwords are equal to each other
 //document.querySelector(".form-group #password").addEventListener("mouseout", get_password);
 
-//code for confirming two passwords are equal to each other
-//(MADE CHANGES TO THIS ON 10/9/2021)
+
 sign_up_password_box.addEventListener("keyup", check_for_similar_passwords)
 sign_up_password_box_2.addEventListener("keyup", check_for_similar_passwords)
 
@@ -198,7 +187,6 @@ function check_for_similar_passwords() {
         //document.querySelector(".form-group .password_strength").style.display = "none";
         document.querySelector('.btn').disabled = false;
         document.querySelector('.btn').style.display = "block";
-        document.querySelector(".form-group .password_strength").style.display = "block";
 
     } else {
         console.log("Please make sure your passwords equal each other")
@@ -219,3 +207,29 @@ function check_for_similar_passwords() {
         }
     }
 }
+
+
+//code for validating email
+
+var email_box = document.querySelector(".form-group #email")
+if(email_box){
+    email_box.addEventListener("keyup", function() {
+        const email_content = document.getElementById('email').value
+
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)){
+            document.querySelector(".email_validator_text").style.display = "none";
+            document.querySelector('.btn').style.display = "block";
+            console.log("valid email address")
+        }
+        else{
+            console.log("invalid email address")
+            document.querySelector(".email_validator_text").style.display = "block";
+            document.querySelector('.btn').style.display = "none";
+        }
+        console.log(email_content)
+    });
+
+}
+
+
+var sign_up_password_box = document.querySelector(".form-group #password");
