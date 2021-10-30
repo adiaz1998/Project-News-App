@@ -164,8 +164,17 @@ footer a {
 }
 
 
-/*Adam S Asimolowo
+/*Adam S Asimolowo 
+
 CSS code for password toggler and for strength password meter*/
+
+input[type="text"] {
+    font-family: "Raleway", sans-serif;
+}
+
+input[type="email"] {
+    font-family: "Raleway", sans-serif;
+}
 
 .password_toggler {
     position: relative;
@@ -295,11 +304,5 @@ CSS code for password toggler and for strength password meter*/
 .confirm_password {
     display: none;
     font-size: 15px;
-    font-weight: bold;
-}
-
-.email_validator_text{
-    color: red;
-    display: none;
     font-weight: bold;
 }

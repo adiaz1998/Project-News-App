@@ -1,6 +1,3 @@
-console.log("testing connection between server and client")
-
-
 var toggle_button = document.querySelector(".form-group .password_toggler")
 var toggle_button_2 = document.querySelector(".form-group .password_toggler_reg")
 var toggle_button_3 = document.querySelector(".form-group .password_toggler_2")
@@ -19,13 +16,10 @@ if (toggle_button) {
         } else {
             console.log("Show password clicked")
             document.getElementById('password_sign_in').setAttribute("type", "text")
-
             // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
             el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
         }
-
     }
-
 }
 
 toggle_button_2.addEventListener("click", function() {
@@ -59,6 +53,26 @@ function toggle_on_off() {
         el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
     }
 
+}
+
+//function for getting passwordStrength
+function getPasswordStrength(password) {
+toggle_button_3.addEventListener("click", toggle_on_off)
+    //toggle_button2.addEventListener("click", toggle_on_off(".form-group", ".password_toggler_reg"))
+function toggle_on_off() {
+    let el = toggle_button_3;
+    if (el.classList.contains("active")) {
+        console.log("Hide password clicked")
+        document.getElementById('password2').setAttribute("type", "password")
+        el.classList.remove("active") //remove a class list from the element (.form-group .password_toggler)
+    } else {
+        console.log("Show password clicked")
+        document.getElementById('password2').setAttribute("type", "text")
+
+        // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+        el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
+    }
+  }
 }
 
 
@@ -157,6 +171,7 @@ if (sign_up_password_box) {
 //document.querySelector(".form-group #password").addEventListener("mouseout", get_password);
 
 
+sign_up_password_box.addEventListener("keyup", check_for_similar_passwords)
 sign_up_password_box_2.addEventListener("keyup", check_for_similar_passwords)
 
 function check_for_similar_passwords() {
@@ -217,5 +232,4 @@ if(email_box){
 }
 
 
-
-var sign_up_password_box = document.querySelector(".form-group #password")
+var sign_up_password_box = document.querySelector(".form-group #password");
