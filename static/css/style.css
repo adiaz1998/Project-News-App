@@ -306,3 +306,121 @@ input[type="email"] {
     font-size: 15px;
     font-weight: bold;
 }
+
+
+/*homepage css*/
+
+.header {
+    background-color: whitesmoke;
+    height: 30px;
+    box-shadow: 10px -10px #CCC;
+}
+
+.header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.header ul li {
+    display: inline;
+    text-decoration: none;
+    /*float: left;*/
+}
+
+.header ul li a {
+    /*display: block;*/
+    padding: 10px;
+    color: #333;
+    font-size: 15px;
+}
+
+
+/*.header ul li:nth-child(3) {
+    padding-left: 50%;
+    padding-left: 35.591%
+    /* 
+}*/
+
+.header ul li a:hover {
+    /*display: block;*/
+    background-color: rgb(248, 243, 234);
+}
+
+.header ul li a i {
+    padding: 4px;
+}
+
+.title {
+    height: auto;
+}
+
+.title h1 {
+    padding-top: 25px;
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 50px;
+    opacity: 0.8;
+}
+
+.title h1:hover {
+    background-color: slateblue;
+}
+
+.title h1 i {
+    padding: 10px;
+}
+
+.nav {
+    height: auto;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.nav ul li {
+    display: inline;
+    border-right: 1px solid;
+}
+
+.nav ul li a {
+    color: #fff;
+    padding: 20px;
+    padding-bottom: 15px;
+    text-decoration: none;
+    font-size: 20px;
+    opacity: 0.8;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.nav ul li a:hover {
+    /*background-color: slategray;*/
+    border-bottom: 2px solid whitesmoke;
+}
+
+.search_bar input[type=text] {
+    padding: 2px;
+    border: none;
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.bttn {
+    padding: 0px;
+    padding-top: 2.5px;
+    color: black;
+}
+
+.reset_password {
+    padding-top: 15px;
+}
+
+.lastchild_password {
+    padding-left: 81%;
+}
