@@ -31,6 +31,8 @@ def index():
     return render_template("login-form.html")
 
 
+
+
 @app.route('/login-form.html')
 def login_form():
     return render_template("login-form.html")
@@ -40,6 +42,15 @@ def login_form():
 def signup_form():
     return render_template("signup-form.html")
 
+
+@app.route('/homepage.html')
+def homepage():
+    return render_template("homepage.html")
+
+
+@app.route('/password_reset.html')
+def resetpage():
+    return render_template("password_reset.html")
 
 @app.route("/register", methods=['POST'])
 def register():
