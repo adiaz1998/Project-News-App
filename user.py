@@ -1,7 +1,10 @@
-from flask import request, render_template, session
+import hashlib
+
+from flask import request, render_template, session, url_for
 from flask_login import login_user, UserMixin
 import pymysql
 from passlib.hash import sha256_crypt
+from werkzeug.utils import redirect
 
 
 class User(UserMixin):
@@ -24,6 +27,11 @@ class User(UserMixin):
 
     def get_id(self):
         return str(self.id).encode(encoding='UTF-8', errors='strict')
+
+    def profilePicture(self, size):
+        digest = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+            digest, size)
 
     @classmethod
     def validateIfFieldExist(cls, db, input, field):
@@ -105,17 +113,14 @@ def registerUser(db):
 
 
 def signIn(db):
-    msg = ""
     if request.method == 'POST' and request.form.get("username") and request.form.get("password"):
         username = request.form['username']
         password = request.form['password']
         user = User.validateIfFieldExist(db, username, "username")
         if user and sha256_crypt.verify(password, user.password):
-            # Login and validate user
-            login_user(user, remember=True)
-            msg = "Successfully logged in!"
-            return userProfile(username, db), 200
-            #return render_template("login-form.html", data=msg), 200
+            session['logged_in'] = True
+            session['user'] = request.form['username']
+            return redirect(url_for('homepage')), 301
         else:
             msg = "Error. Invalid username or password"
             return render_template("login-form.html", data=msg), 401
@@ -128,6 +133,5 @@ def signIn(db):
 
 
 def userProfile(username, db):
-    user = User.get_user(db, username, "username")
-    return render_template("account.html", user=user)
-
+    user = User.validateIfFieldExist(db, username, "username")
+    return render_template("user-profile.html", user=user)
