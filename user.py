@@ -135,3 +135,6 @@ def signIn(db):
 def userProfile(username, db):
     user = User.validateIfFieldExist(db, username, "username")
     return render_template("user-profile.html", user=user)
+
+def resetPassword(pasword, db):
+    pass
