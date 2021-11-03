@@ -80,6 +80,9 @@ function getPasswordStrength(password) {
 function getPasswordStrength(password) {
     let s = 0;
 
+    if (password.length == 0) {
+        s = 0;
+    }
     if (password.length > 4) {
         s++;
     }
@@ -124,15 +127,20 @@ if (sign_up_password_box) {
         let password = e.target.value;
         let strength = getPasswordStrength(password)
         let passwordStrengthSpan = document.querySelectorAll(".form-group .password_strength span")
-        strength = Math.max(strength, 1)
+        strength2 = Math.max(strength, 1)
         passwordStrengthSpan[1].style.width = strength * 20 + "%";
 
-        if (strength < 2) {
+        if (strength == 0) {
+            passwordStrengthSpan[0].innerText = "Strength: Neutral";
+            passwordStrengthSpan[1].style.color = "#111";
+            passwordStrengthSpan[1].style.background = "#d13636";
+            document.querySelector('.btn').style.display = "none";
+        } else if (strength2 > 0 && strength2 < 2) {
             passwordStrengthSpan[0].innerText = "Strength: Weak";
             passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#d13636";
             document.querySelector('.btn').style.display = "none";
-        } else if (strength >= 2 && strength <= 4) {
+        } else if (strength2 >= 2 && strength2 <= 4) {
 
             passwordStrengthSpan[0].innerText = "Strength: Medium";
             passwordStrengthSpan[1].style.color = "#111";
