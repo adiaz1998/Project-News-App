@@ -16,7 +16,7 @@ if (toggle_button) {
         } else {
             console.log("Show password clicked")
             document.getElementById('password_sign_in').setAttribute("type", "text")
-            // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+                // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
             el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
         }
     }
@@ -57,22 +57,22 @@ function toggle_on_off() {
 
 //function for getting passwordStrength
 function getPasswordStrength(password) {
-toggle_button_3.addEventListener("click", toggle_on_off)
-    //toggle_button2.addEventListener("click", toggle_on_off(".form-group", ".password_toggler_reg"))
-function toggle_on_off() {
-    let el = toggle_button_3;
-    if (el.classList.contains("active")) {
-        console.log("Hide password clicked")
-        document.getElementById('password2').setAttribute("type", "password")
-        el.classList.remove("active") //remove a class list from the element (.form-group .password_toggler)
-    } else {
-        console.log("Show password clicked")
-        document.getElementById('password2').setAttribute("type", "text")
+    toggle_button_3.addEventListener("click", toggle_on_off)
+        //toggle_button2.addEventListener("click", toggle_on_off(".form-group", ".password_toggler_reg"))
+    function toggle_on_off() {
+        let el = toggle_button_3;
+        if (el.classList.contains("active")) {
+            console.log("Hide password clicked")
+            document.getElementById('password2').setAttribute("type", "password")
+            el.classList.remove("active") //remove a class list from the element (.form-group .password_toggler)
+        } else {
+            console.log("Show password clicked")
+            document.getElementById('password2').setAttribute("type", "text")
 
-        // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
-        el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
+            // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+            el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
+        }
     }
-  }
 }
 
 
@@ -198,6 +198,7 @@ function check_for_similar_passwords() {
         if (document.querySelector('.btn').disabled == true) {
             document.querySelector('.btn').style.display = "none";
 
+            //aa
             //console.log(";p;")
             //document.querySelector('.btn').addEventListener("mouseover", displayError)
 
@@ -212,16 +213,15 @@ function check_for_similar_passwords() {
 //code for validating email
 
 var email_box = document.querySelector(".form-group #email")
-if(email_box){
+if (email_box) {
     email_box.addEventListener("keyup", function() {
         const email_content = document.getElementById('email').value
 
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)){
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)) {
             document.querySelector(".email_validator_text").style.display = "none";
             document.querySelector('.btn').style.display = "block";
             console.log("valid email address")
-        }
-        else{
+        } else {
             console.log("invalid email address")
             document.querySelector(".email_validator_text").style.display = "block";
             document.querySelector('.btn').style.display = "none";
