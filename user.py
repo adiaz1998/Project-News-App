@@ -1,17 +1,29 @@
-from flask import request, render_template, session
+import hashlib
+
+from flask import request, render_template, session, url_for
 from flask_login import login_user, UserMixin
 import pymysql
 from passlib.hash import sha256_crypt
+from werkzeug.utils import redirect
 
 
 class User(UserMixin):
-    def __init__(self, _id, first_name, last_name, username, password, email):
+    def __init__(self, _id, first_name, last_name, username, password, email, business, entertainment, general, health, science, 
+    sports, technology):
+
         self.id = _id
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.password = password
         self.email = email
+        self.business = business
+        self.entertainment = entertainment
+        self.general = general
+        self.health = health
+        self.science = science
+        self.sports = sports
+        self.technology = technology
 
     def is_authenticated(self):
         return True
@@ -24,6 +36,11 @@ class User(UserMixin):
 
     def get_id(self):
         return str(self.id).encode(encoding='UTF-8', errors='strict')
+
+    def profilePicture(self, size):
+        digest = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+            digest, size)
 
     @classmethod
     def validateIfFieldExist(cls, db, input, field):
@@ -67,17 +84,38 @@ class User(UserMixin):
 
         return user
 
+def getPreference(preference):
+    if request.form.get(preference):
+       return True
+    else:
+        print(preference + " = FALSE")
+        return False
+
 
 def registerUser(db):
     data = ""
     if request.method == 'POST' and request.form.get("firstName") and request.form.get("lastName") \
             and request.form.get("username") and request.form.get("password") and request.form.get("password2") \
-            and request.form.get("email"):
+            and request.form.get("email"): 
+
+        #User Profile Properties
         first_name = request.form['firstName']
         last_name = request.form['lastName']
         username = request.form['username']
         password = sha256_crypt.hash(request.form['password'])
         email = request.form['email']
+
+        #User Article Preferences Properties
+        business = getPreference("business_checkbox")
+        entertainment = getPreference("entertainment_checkbox")
+        general = getPreference("general_checkbox")
+        health = getPreference("health_checkbox")
+        science = getPreference("science_checkbox")
+        sports = getPreference("sports_checkbox")
+        technology = getPreference("technology_checkbox")
+
+        #create a logic that if all the articles are equal to false; the user will be presented with an default 
+        #article
 
         if User.validateIfFieldExist(db, username, "username"):
             data = "A user with the username already exists"
@@ -89,8 +127,8 @@ def registerUser(db):
 
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (first_name, last_name, username, password, email,))
+        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (first_name, last_name, username, password, email, business, entertainment, general, health, science, sports, technology,))
         connection.commit()
         data = "User created successfully!"
         return render_template('signup-form.html', data=data), 201
@@ -105,17 +143,14 @@ def registerUser(db):
 
 
 def signIn(db):
-    msg = ""
     if request.method == 'POST' and request.form.get("username") and request.form.get("password"):
         username = request.form['username']
         password = request.form['password']
         user = User.validateIfFieldExist(db, username, "username")
         if user and sha256_crypt.verify(password, user.password):
-            # Login and validate user
-            login_user(user, remember=True)
-            msg = "Successfully logged in!"
-            return userProfile(username, db), 200
-            #return render_template("login-form.html", data=msg), 200
+            session['logged_in'] = True
+            session['user'] = request.form['username']
+            return redirect(url_for('homepage')), 301
         else:
             msg = "Error. Invalid username or password"
             return render_template("login-form.html", data=msg), 401
@@ -128,6 +163,5 @@ def signIn(db):
 
 
 def userProfile(username, db):
-    user = User.get_user(db, username, "username")
-    return render_template("account.html", user=user)
-
+    user = User.validateIfFieldExist(db, username, "username")
+    return render_template("user-profile.html", user=user)
