@@ -1,5 +1,5 @@
 import login as login
-from flask import Flask, render_template
+from flask import Flask, session, render_template, request, redirect, g, url_for
 from flask_login import login_required, LoginManager, current_user
 from flaskext.mysql import MySQL
 from user import registerUser, signIn, User, userProfile
@@ -21,6 +21,7 @@ login.login_view = 'login'
 login_manager.init_app(app)
 
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.get_user(mysql, user_id, "id")
@@ -28,9 +29,9 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+    if g.user:
+        return render_template("homepage.html")
     return render_template("login-form.html")
-
-
 
 
 @app.route('/login-form.html')
@@ -45,12 +46,29 @@ def signup_form():
 
 @app.route('/homepage.html')
 def homepage():
-    return render_template("homepage.html")
+    if g.user:
+        return render_template("homepage.html")
+    return redirect(url_for('index'))
+
+
+@app.before_request
+def before_request():
+    g.user = None
+
+    if 'user' in session:
+        g.user = session['user']
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 
 @app.route('/password_reset.html')
 def resetpage():
     return render_template("password_reset.html")
+
 
 @app.route("/register", methods=['POST'])
 def register():
@@ -62,12 +80,14 @@ def login():
     return signIn(mysql)
 
 
-@app.route("/user/<string:username>", methods=['GET'])
-@login_required
-def user():
-    return userProfile(current_user.username, mysql)
+@app.route("/user/<username>", methods=['GET'])
+def user(username):
+    if g.user:
+        g.user = username
+        return userProfile(g.user, mysql)
+    return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-
