@@ -1,30 +1,9 @@
-import login as login
-from flask import Flask, session, render_template, request, redirect, g, url_for
-from flask_login import login_required, LoginManager, current_user
+from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
-from user import registerUser, signIn, User, userProfile
-
-app = Flask(__name__)
-
-app.secret_key = 'key'
-
-app.config['MYSQL_DATABASE_HOST'] = 'database-2.c66o8xpkeycc.us-east-1.rds.amazonaws.com'
-app.config['MYSQL_DATABASE_PORT'] = 3306
-app.config['MYSQL_DATABASE_USER'] = 'admin'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'blue0918'
-app.config['MYSQL_DATABASE_DB'] = 'SP_login'
+from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile
+from __init__ import app
 
 mysql = MySQL(app)
-
-login_manager = LoginManager()
-login.login_view = 'login'
-login_manager.init_app(app)
-
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get_user(mysql, user_id, "id")
 
 
 @app.route('/')
@@ -42,6 +21,14 @@ def login_form():
 @app.route('/signup-form.html')
 def signup_form():
     return render_template("signup-form.html")
+
+
+@app.route('/settings.html')
+def settings():
+    if g.user:
+        return render_template("settings.html")
+    else:
+        render_template("login-form.html")
 
 
 @app.route('/homepage.html')
@@ -87,6 +74,22 @@ def user(username):
         return userProfile(g.user, mysql)
     return redirect(url_for('index'))
 
+
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_password():
+    return forgotPassword(mysql)
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    return resetPassword(token, mysql)
+
+
+@app.route('/edit_profile', methods=['POST'])
+def edit_profile():
+    if g.user:
+        return editProfile(g.user, mysql)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
