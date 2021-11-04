@@ -20,7 +20,6 @@
                 <ul>
                     <li><a href="http://127.0.0.1:5000/">Homepage</a></li>
                     <li><a href="http://127.0.0.1:5000/logout">Log Out</a></li>
-                    <li class="child_3"><a href="http://127.0.0.1:5000/edit_password.html">Change Password</a></li>
                     <li><a href="http://127.0.0.1:5000/settings.html"><i class="fas fa-edit"></i>Edit Your Profile</a></li>
                 </ul>
             </header>
@@ -30,19 +29,18 @@
 
   <!-- User Profile -->
     <div id="container">
-            <table>
-              <tr valign="top">
-                  <img src="{{ user.profilePicture(128) }}" style=" height: 150px;width: 150px;"/>
-                  <th><h1>Username: </h1></th>
-                  <td><h1>{{ user.username }}</h1></td>
-                  <th><h1>First Name: </h1></th>
-                  <td><h1> {{ user.first_name }} </h1></td>
-                  <th><h1>Last Name: </h1></th>
-                  <td><h1> {{ user.last_name }}s </h1></td>
-                  <th><h1>About Me: </h1></th>
-                  <td><h1> {{ user.about_me }} </h1></td>
-              </tr>
-            </table>
+       <img src="{{ user.profilePicture(128) }}" style=" height: 150px;width: 150px;"/>
+       <h1>User Profile</h1>
+       <ul>
+          <li><h2>Username : </h2></li>
+          <li><h3>{{ user.username }} </h3></li>
+          <li><h2>First Name : </h2></li>
+          <li><h3>{{ user.first_name }} </h3></li>
+          <li><h2>Last Name : </h2></li>
+          <li><h3>{{ user.last_name }}</h3></li>
+          <li><h2>About Me: </h2></li>
+          <li><h3>{{ user.about_me  }} </h3></li>
+       </ul>
     </div>
 </body>
 </html>

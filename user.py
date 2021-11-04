@@ -125,7 +125,7 @@ def registerUser(db):
 
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
         cursor.execute(query, (
             first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
             technology,))
