@@ -49,7 +49,7 @@ class User(UserMixin):
             digest, size)
 
     @classmethod
-    def validateIfFieldExist(cls, db, input, field):
+    def getUser(cls, db, input, field):
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = "SELECT * FROM users WHERE " + field + " = %s"
@@ -82,7 +82,7 @@ class User(UserMixin):
             user_id = serial.loads(token)["user_id"]
         except:
             return None
-        return User.validateIfFieldExist(db, user_id, 'id')
+        return User.getUser(db, user_id, 'id')
 
 
 def getPreference(preference):
@@ -115,11 +115,11 @@ def registerUser(db):
         sports = getPreference("sports_checkbox")
         technology = getPreference("technology_checkbox")
 
-        if User.validateIfFieldExist(db, username, "username"):
+        if User.getUser(db, username, "username"):
             data = "A user with the username already exists"
             return render_template('signup-form.html', data=data), 400
 
-        if User.validateIfFieldExist(db, email, "email"):
+        if User.getUser(db, email, "email"):
             data = "A user with the email already exists"
             return render_template('signup-form.html', data=data), 400
 
@@ -127,8 +127,8 @@ def registerUser(db):
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(query, (
-        first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
-        technology,))
+            first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
+            technology,))
         connection.commit()
         data = "User created successfully!"
         return render_template('signup-form.html', data=data), 201
@@ -146,7 +146,7 @@ def signIn(db):
     if request.method == 'POST' and request.form.get("username") and request.form.get("password"):
         username = request.form['username']
         password = request.form['password']
-        user = User.validateIfFieldExist(db, username, "username")
+        user = User.getUser(db, username, "username")
         if user and sha256_crypt.verify(password, user.password):
             session['logged_in'] = True
             session['user'] = request.form['username']
@@ -163,7 +163,7 @@ def signIn(db):
 
 
 def userProfile(username, db):
-    user = User.validateIfFieldExist(db, username, "username")
+    user = User.getUser(db, username, "username")
     return render_template("user-profile.html", user=user, _external=True)
 
 
@@ -185,7 +185,7 @@ def forgotPassword(db):
     msg = "if an account exists for that email address, we have sent you an email with a link to reset your password."
     if request.method == 'POST' and request.form.get("email"):
         email = request.form['email']
-        user = User.validateIfFieldExist(db, email, "email")
+        user = User.getUser(db, email, "email")
         if user:
             send_mail(user)
         return render_template('password_reset.html', msg=msg), 200
@@ -202,10 +202,11 @@ def resetPassword(token, db):
         return render_template('password_change.html', data=data)
     return render_template('password_change.html')
 
+
 def editProfile(username, db):
-    print(username)
-    user = User.validateIfFieldExist(db, username, "username")
-    if request.method == 'POST' and request.form.get("username") or request.form.get("firstName") or request.form.get("lastName") \
+    user = User.getUser(db, username, "username")
+    if request.method == 'POST' and request.form.get("username") or request.form.get("firstName") or request.form.get(
+            "lastName") \
             or request.form.get("aboutMe"):
         username = request.form['username']
         if username:
@@ -221,7 +222,7 @@ def editProfile(username, db):
         if about_me:
             User.changeValue(db, about_me, "about_me", user.id)
         data = "User Profile has been successfully updated"
-        return render_template('settings.html', data=data)
+        return render_template('settings.html', data=data), 200
     elif request.method == 'POST':
         data = "You haven't filled out anything"
         return render_template("login-form.html", data=data), 400
@@ -230,3 +231,21 @@ def editProfile(username, db):
         return render_template('signup-form.html', data=data), 500
 
 
+def changePassword(username, db):
+    user = User.getUser(db, username, "username")
+    if request.method == 'POST' and request.form.get("currentPassword") and request.form.get("password"):
+        current_password = request.form['currentPassword']
+        if sha256_crypt.verify(current_password, user.password):
+            new_password = sha256_crypt.hash(request.form['password'])
+            User.changeValue(db, new_password, "password", user.id)
+            data = "Password has successfully changed!"
+            return render_template('edit_password.html', data=data), 200
+        else:
+            data = "Wrong password"
+            return render_template('edit_password.html', data=data), 400
+    elif request.method == 'POST':
+        data = "Fill out the form!"
+        return render_template("edit_password.html", data=data), 400
+    else:
+        data = "The server has encountered a situation it does not know how to handle."
+        return render_template('edit_password.html', data=data), 500

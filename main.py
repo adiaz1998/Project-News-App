@@ -1,6 +1,6 @@
 from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
-from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile
+from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
 from __init__ import app
 
 mysql = MySQL(app)
@@ -23,6 +23,13 @@ def signup_form():
     return render_template("signup-form.html")
 
 
+@app.route('/homepage.html')
+def homepage():
+    if g.user:
+        return render_template("homepage.html")
+    return redirect(url_for('index'))
+
+
 @app.route('/settings.html')
 def settings():
     if g.user:
@@ -31,11 +38,12 @@ def settings():
         render_template("login-form.html")
 
 
-@app.route('/homepage.html')
-def homepage():
+@app.route('/edit_password.html')
+def edit_password():
     if g.user:
-        return render_template("homepage.html")
-    return redirect(url_for('index'))
+        return render_template("edit_password.html")
+    else:
+        render_template("login-form.html")
 
 
 @app.before_request
@@ -89,6 +97,13 @@ def reset_token(token):
 def edit_profile():
     if g.user:
         return editProfile(g.user, mysql)
+    return redirect(url_for('index'))
+
+
+@app.route('/password_change', methods=['POST'])
+def password_change():
+    if g.user:
+        return changePassword(g.user, mysql)
     return redirect(url_for('index'))
 
 
