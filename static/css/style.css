@@ -9,7 +9,7 @@ body {
     font-family: "Raleway", sans-serif;
     background: #344a72;
     color: #fff;
-    line-height: 1.8;
+    line-height: 1.805;
 }
 
 a {
@@ -164,8 +164,17 @@ footer a {
 }
 
 
-/*Adam S Asimolowo
+/*Adam S Asimolowo 
+
 CSS code for password toggler and for strength password meter*/
+
+input[type="text"] {
+    font-family: "Raleway", sans-serif;
+}
+
+input[type="email"] {
+    font-family: "Raleway", sans-serif;
+}
 
 .password_toggler {
     position: relative;
@@ -296,4 +305,146 @@ CSS code for password toggler and for strength password meter*/
     display: none;
     font-size: 15px;
     font-weight: bold;
+}
+
+
+/*homepage css*/
+
+.header {
+    background-color: whitesmoke;
+    height: 30px;
+    box-shadow: 10px -10px #CCC;
+}
+
+.header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.header ul li {
+    display: inline;
+    text-decoration: none;
+    /*float: left;*/
+}
+
+.header ul li a {
+    /*display: block;*/
+    padding: 10px;
+    color: #333;
+    font-size: 15px;
+}
+
+
+/*.header ul li:nth-child(3) {
+    padding-left: 50%;
+    padding-left: 35.591%
+    /* 
+}*/
+
+.header ul li a:hover {
+    /*display: block;*/
+    background-color: rgb(248, 243, 234);
+}
+
+.header ul li a i {
+    padding: 4px;
+}
+
+.title {
+    height: auto;
+}
+
+.title h1 {
+    padding-top: 25px;
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 50px;
+    opacity: 0.8;
+}
+
+.title h1:hover {
+    background-color: slateblue;
+}
+
+.title h1 i {
+    padding: 10px;
+}
+
+.nav {
+    height: auto;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.nav ul li {
+    display: inline;
+    border-right: 1px solid;
+}
+
+.nav ul li a {
+    color: #fff;
+    padding: 20px;
+    padding-bottom: 15px;
+    text-decoration: none;
+    font-size: 20px;
+    opacity: 0.8;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.nav ul li a:hover {
+    /*background-color: slategray;*/
+    border-bottom: 2px solid whitesmoke;
+}
+
+.search_bar input[type=text] {
+    padding: 2px;
+    border: none;
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.bttn {
+    padding: 0px;
+    padding-top: 2.5px;
+    color: black;
+}
+
+.reset_password {
+    padding-top: 15px;
+}
+
+.email_validator_text {
+    color: red;
+    font-weight: bold;
+    display: none;
+}
+
+.lastchild_password {
+    padding-left: 81%;
+}
+
+.article_elements label {
+    font-size: smaller;
+}
+
+.article_form {
+    padding-top: 5%;
+}
+
+.article_elements_right {
+    position: relative;
+    left: 230px;
+    bottom: 110px;
+}
+
+.article_elements_right label {
+    font-size: smaller;
 }

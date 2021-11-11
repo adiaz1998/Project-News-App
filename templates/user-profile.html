@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>User Profile</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+        <div class="header">
+            <header>
+                <ul>
+                    <li><a href="http://127.0.0.1:5000/">Homepage</a></li>
+                    <li><a href="http://127.0.0.1:5000/logout">Log Out</a></li>
+                    <li class="child_3"><a href="http://127.0.0.1:5000/edit_password.html">Change Password</a></li>
+                    <li><a href="http://127.0.0.1:5000/settings.html"><i class="fas fa-edit"></i>Edit Your Profile</a></li>
+                </ul>
+            </header>
+        </div>
+<body>
+
+
+  <!-- User Profile -->
+    <div id="container">
+       <img src="{{ user.profilePicture(128) }}" style=" height: 150px;width: 150px;"/>
+       <h1>User Profile</h1>
+       <ul>
+          <li><h2>Username : </h2></li>
+          <li><h3>{{ user.username }} </h3></li>
+          <li><h2>First Name : </h2></li>
+          <li><h3>{{ user.first_name }} </h3></li>
+          <li><h2>Last Name : </h2></li>
+          <li><h3>{{ user.last_name }}</h3></li>
+          <li><h2>About Me: </h2></li>
+          <li><h3>{{ user.about_me  }} </h3></li>
+       </ul>
+    </div>
+</body>
+</html>
+

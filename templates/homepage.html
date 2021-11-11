@@ -1,0 +1,67 @@
+<!-- #border-right: 1px solid-->
+<!--HTML BOILERPLATE TEMPLATE-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Homepage</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" />
+
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/8adb5da3fe.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section id="top">
+
+        <div class="header">
+            <header>
+                <ul>
+                    <li><a href="http://127.0.0.1:5000/settings.html"><i class="fas fa-edit"></i>Edit Your Profile</a></li>
+                    <li>
+                        <a href="http://127.0.0.1:5000/logout">Log Out</a></li>
+                    <li class="child_3"><a href="http://127.0.0.1:5000/edit_password.html">Change Password</a></li>
+                    <li><a href="http://127.0.0.1:5000/user/{{session['user']}}"><i class="fas fa-user "></i>My Account</a></li>
+
+                </ul>
+            </header>
+        </div>
+
+        <div class="title">
+            <h1><i class="fas fa-book-open"></i>SP News</h1>
+            <hr size="1">
+        </div>
+
+        <div class="nav">
+            <nav>
+                <ul>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Entertainment</a></li>
+                    <li><a href="#">General</a></li>
+                    <li><a href="#">Health</a></li>
+                    <li><a href="#">Science</a></li>
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Technology</a></li>
+                    <li class = "search_bar"><input type="text" placeholder="Search.."></li>
+                    <button class = "bttn" type="submit"><i class="fas fa-search"></i></button>
+                </ul>
+
+                
+            </nav>
+        </div>
+    </section>
+
+    <section id="middle">
+        <div class="">
+
+        </div>
+    </section>
+</body>
+
+</html>
