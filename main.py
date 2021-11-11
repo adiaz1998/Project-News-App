@@ -1,6 +1,7 @@
 from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
 from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
+from auth import auth
 from __init__ import app
 
 mysql = MySQL(app)
@@ -39,11 +40,12 @@ def settings():
 
 
 @app.route('/edit_password.html')
+@auth.login_required
 def edit_password():
-    if g.user:
-        return render_template("edit_password.html")
-    else:
-        render_template("login-form.html")
+    #if g.user:
+    return render_template("edit_password.html")
+    #else:
+       # render_template("login-form.html")
 
 
 @app.before_request

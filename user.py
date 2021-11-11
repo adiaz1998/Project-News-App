@@ -48,6 +48,7 @@ class User(UserMixin):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
+    # Retrieve a user based on the field given
     @classmethod
     def getUser(cls, db, input, field):
         connection = db.connect()
@@ -62,6 +63,7 @@ class User(UserMixin):
         connection.close()
         return user
 
+    # Change a value for that particular User
     @classmethod
     def changeValue(cls, db, input, field, user_id):
         connection = db.connect()
@@ -71,6 +73,7 @@ class User(UserMixin):
         cursor.execute(query, (input, user_id,))
         connection.commit()
 
+    # Generate a token
     def generate_token(self, expires=600):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires)
         return serial.dumps({"user_id": self.id}).decode("utf-8")
