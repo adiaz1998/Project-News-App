@@ -421,6 +421,30 @@ input[type="email"] {
     padding-top: 15px;
 }
 
+.email_validator_text {
+    color: red;
+    font-weight: bold;
+    display: none;
+}
+
 .lastchild_password {
     padding-left: 81%;
+}
+
+.article_elements label {
+    font-size: smaller;
+}
+
+.article_form {
+    padding-top: 5%;
+}
+
+.article_elements_right {
+    position: relative;
+    left: 230px;
+    bottom: 110px;
+}
+
+.article_elements_right label {
+    font-size: smaller;
 }

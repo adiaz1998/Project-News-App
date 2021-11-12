@@ -14,6 +14,35 @@ RUN pip install -r requirements.txt
 CMD ["python", "main.py"]
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #will be utilizing an ubuntu image
 #FROM ubuntu:16.04 
 

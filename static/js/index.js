@@ -222,7 +222,7 @@ function check_for_similar_passwords() {
 
 var email_box = document.querySelector(".form-group #email")
 if (email_box) {
-    email_box.addEventListener("keyup", function() {
+    email_box.addEventListener("keyup", function(e) {
         const email_content = document.getElementById('email').value
 
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)) {
