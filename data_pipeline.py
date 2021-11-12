@@ -1,13 +1,13 @@
 #MAKE SURE
 #Updates twice a day
+#Need to have this pipeline running in docker
 
 import json
-from os import waitpid
+from requests.api import get
 from main import mysql
 import pandas as pd
 from newsapi import NewsApiClient
 import pymysql
-
 
 # Init
 newsapi = NewsApiClient(api_key='cc25f61892174ebf82454d80258ad77e')
@@ -19,8 +19,6 @@ def getTopHeadLines(cat):
                                             country='us')
     return top_headlines
 
-top_headlines_business = getTopHeadLines('business')
-top_headlines_technology = getTopHeadLines('technology')
 
 def getHeadlineProperties(var, cat):
 
@@ -29,26 +27,38 @@ def getHeadlineProperties(var, cat):
     urls = []
     date_time = []
     category = []
+    sum = 0
 
     for item, value in var.items():
         #print(item, value)
-        print(item)
+        #print(str(item), str(value) + "\n")
         if item == "articles":
             #print(value)
             for i in value:
-                #utilize an list to append all the values within the JSON file into a list
-                authors.append(i['author'])
-                urls.append(i['url']) 
-                date_time.append(i['publishedAt'])
-                title.append(i['title'])
-                category.append(cat)
-                #if i == "source":
-                #   print('source found')
+                sum = sum + 1
+                print(sum)
+                if sum >= 14:
+                    break
+                else:
+                    #utilize an list to append all the values within the JSON file into a list
+                    authors.append(i['author'])
+                    urls.append(i['url']) 
+                    date_time.append(i['publishedAt'])
+                    title.append(i['title'])
+                    category.append(cat)
+
+                    #if i == "source":
+                    #   print('source found')
 
     return authors, urls, date_time, title, category
 
-properties_business = getHeadlineProperties(top_headlines_business, 'business')
-properties_technology = getHeadlineProperties(top_headlines_technology, 'technology')
+properties_business = getHeadlineProperties(getTopHeadLines('business'), 'business')
+properties_technology = getHeadlineProperties(getTopHeadLines('technology'), 'technology')
+properties_general = getHeadlineProperties(getTopHeadLines('general'), 'general')
+properties_health = getHeadlineProperties(getTopHeadLines('health'), 'health')
+properties_science = getHeadlineProperties(getTopHeadLines('science'), 'science')
+properties_sports = getHeadlineProperties(getTopHeadLines('sports'), 'sports')
+properties_entertainment = getHeadlineProperties(getTopHeadLines('entertainment'), 'entertainment')
 
 def getLengthArticles(var):
     for item, value in var.items():
@@ -56,14 +66,8 @@ def getLengthArticles(var):
             print(value)
 
             return value
-article_length = getLengthArticles(top_headlines_business)
-#print(properties)
 
-#print(properties)
-print("\n\n")
-
-
-ok = json.dumps(top_headlines_technology, indent=4)
+ok = json.dumps(getTopHeadLines('technology'), indent=4)
 print(ok)
 
 print("\n\n\n")
@@ -74,24 +78,57 @@ def convertPropertiesToDF(properties_cat):
     i = 0
     data = {'authors': properties_cat[i] , 'urls': properties_cat[i+1] , 'date_time': properties_cat[i+2] , 'title': properties_cat[i+3] , 'category': properties_cat[i+4]}
 
-    dataFrame = pd.DataFrame(data)
-    #print(dataFrame) 
-    print("\n\n\n")
-    for i, v in dataFrame.iterrows():
-        print(v['date_time'])
-        print(v[0])
-
-    return dataFrame
+    if data:
+        dataFrame = pd.DataFrame(data)
+        print("\n")
+        return dataFrame
+    else:
+        print("data not found")
+    
     #print(dataFrame['authors'])
     #print(dataFrame['urls'])
 
-dataFrame = convertPropertiesToDF(properties_technology)
+dataFrame_general = convertPropertiesToDF(properties_general)
+
+#print(dataFrame)
 print("\n\n\n")
-print(dataFrame)
-print("\n\n\n")
+
+
+article_preference_dictionary = {
+    1 : convertPropertiesToDF(properties_business),
+    2 : convertPropertiesToDF(properties_technology),
+    3 : convertPropertiesToDF(properties_general),
+    4 : convertPropertiesToDF(properties_sports),
+    5 : convertPropertiesToDF(properties_health),
+    6 : convertPropertiesToDF(properties_science),
+    7 : convertPropertiesToDF(properties_entertainment)
+    #1 = business
+    #2 = technology
+    #3 = general
+    #4 = sports
+}
+
+#get the length of the dictionary 
+print(len(article_preference_dictionary))
+
+print("TESTIING THIS OUT.....................")
+
+#put lines 112-116 into the integration aspect of the code
+
+#for k,v in article_preference_dictionary[4].iterrows():
+ #   print(v['title'])
+  #  print(v['date_time'])
+   # print(v['category'])
 
 
 print("\n\n")
+for i in range(1, (len(article_preference_dictionary)+1)):
+    for k, v in article_preference_dictionary[i].iterrows():
+        print("\n")
+        print(v['title'])
+        print(v['date_time'])
+        print(v['category'])
+        print(v['urls'])
 
 
 #def insert_newsfeed_data(db, apikey, repeat_time, title, url, date_time, category, keyword, favorite)
@@ -114,9 +151,11 @@ def insert_newsfeed_data(db):
                 
                 print(v['title'])
                 print(v['date_time'])
+
                 query = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s)"
                 if query:
-                    cursor.execute(query, (v['title'], v['urls'], v['date_time'], v['category'],))
+
+                    #cursor.execute(query, (v['title'], v['urls'], v['date_time'], v['category'],))
                     print("imported into database")
 
             connection.commit()
@@ -128,13 +167,6 @@ def insert_newsfeed_data(db):
 
 
 insert_newsfeed_data(mysql)
-
-
-
-
-
-
-
 
 
 
