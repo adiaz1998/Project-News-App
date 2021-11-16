@@ -1,6 +1,7 @@
 #MAKE SURE
 #Updates twice a day
 #Need to have this pipeline running in docker
+#lol
 
 import json
 from requests.api import get
