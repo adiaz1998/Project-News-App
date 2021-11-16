@@ -60,7 +60,9 @@ properties_science = getHeadlineProperties(getTopHeadLines('science'), 'science'
 properties_sports = getHeadlineProperties(getTopHeadLines('sports'), 'sports')
 properties_entertainment = getHeadlineProperties(getTopHeadLines('entertainment'), 'entertainment')
 
+
 def getLengthArticles(var):
+
     for item, value in var.items():
         if item == "totalResults":
             print(value)
@@ -95,6 +97,7 @@ print("\n\n\n")
 
 
 article_preference_dictionary = {
+
     1 : convertPropertiesToDF(properties_business),
     2 : convertPropertiesToDF(properties_technology),
     3 : convertPropertiesToDF(properties_general),
@@ -102,16 +105,21 @@ article_preference_dictionary = {
     5 : convertPropertiesToDF(properties_health),
     6 : convertPropertiesToDF(properties_science),
     7 : convertPropertiesToDF(properties_entertainment)
+
     #1 = business
     #2 = technology
     #3 = general
     #4 = sports
+    #5 = health
+    #6 = science
+    #7 = entertainment
+
 }
 
 #get the length of the dictionary 
 print(len(article_preference_dictionary))
 
-print("TESTIING THIS OUT.....................")
+print("TESTING THIS OUT.....................")
 
 #put lines 112-116 into the integration aspect of the code
 
@@ -122,13 +130,7 @@ print("TESTIING THIS OUT.....................")
 
 
 print("\n\n")
-for i in range(1, (len(article_preference_dictionary)+1)):
-    for k, v in article_preference_dictionary[i].iterrows():
-        print("\n")
-        print(v['title'])
-        print(v['date_time'])
-        print(v['category'])
-        print(v['urls'])
+
 
 
 #def insert_newsfeed_data(db, apikey, repeat_time, title, url, date_time, category, keyword, favorite)
@@ -136,7 +138,6 @@ for i in range(1, (len(article_preference_dictionary)+1)):
 def insert_newsfeed_data(db):
 
     #FETCH DATA FROM NEWSFEED
-
     #establishing a connection to the database
 
     connection = db.connect() 
@@ -147,29 +148,36 @@ def insert_newsfeed_data(db):
         if cursor:
             print("cursor variable found")
 
-            for i, v in dataFrame.iterrows():
-                
-                print(v['title'])
-                print(v['date_time'])
+            query1 = "TRUNCATE TABLE `newsfeed`"
 
-                query = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s)"
-                if query:
+            cursor.execute(query1)
 
-                    #cursor.execute(query, (v['title'], v['urls'], v['date_time'], v['category'],))
-                    print("imported into database")
+            for i in range(1, (len(article_preference_dictionary)+1)):
+                for k, v in article_preference_dictionary[i].iterrows():
 
-            connection.commit()
+                    print("\n")
+                    print(v['title'])
+                    print(v['date_time'])
+                    print(v['category'])
+                    print(v['urls'])
+                    
+                    
+                    query2 = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s)"
 
-            #for i = 0, i <= 2400000, i+= 2200000 #will run this script twice a day
+                    if query2:
+    
+                        cursor.execute(query2, (v['title'], v['urls'], v['date_time'], v['category'],))
+                        print("imported into database")
 
-        elif not connection:
-            print("ERROR: connection not made...")
+                    connection.commit()
+
+                    #for i = 0, i <= 2400000, i+= 2200000 #will run this script twice a day
+
+    elif not connection:
+        print("ERROR: connection not made...")
 
 
 insert_newsfeed_data(mysql)
-
-
-
 
 
 #print(properties_business[i])
