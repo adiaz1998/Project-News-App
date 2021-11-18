@@ -6,7 +6,7 @@ from user import User
 
 def retrieveNewsFeed(username, db):
     user = User.getUser(db, username, "username")
-    preferences = ["business", "entertainment", "general1", "health", "science", "sports", "technology"]
+    preferences = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
     UserPreference = []
     for preference in preferences:
         if User.getUser(db, 1, preference):

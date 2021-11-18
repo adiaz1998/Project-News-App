@@ -127,6 +127,10 @@ def registerUser(db):
         sports = getPreference("sports_checkbox")
         technology = getPreference("technology_checkbox")
 
+        if not business and not entertainment and not general and not health and not science and not sports and not \
+                technology:
+            general = True
+
         if User.getUser(db, username, "username"):
             data = "A user with the username already exists"
             return render_template('signup-form.html', data=data), 400
@@ -218,10 +222,11 @@ def resetPassword(token, db):
 def editProfile(username, db):
     user = User.getUser(db, username, "username")
     if request.method == 'POST' and request.form.get("firstName") or request.form.get("lastName") or \
-            request.form.get("aboutMe") or request.form.get("business_yes") or request.form.get("business_no")\
-            or request.form.get("entertainment_yes") or request.form.get("entertainment_no") or request.form.get("general1_yes")\
-            or request.form.get("general1_no") or request.form.get("health_yes") or request.form.get("health_no")\
-            or request.form.get("science_yes") or request.form.get("science_no") or request.form.get("sports_yes")\
+            request.form.get("aboutMe") or request.form.get("business_yes") or request.form.get("business_no") \
+            or request.form.get("entertainment_yes") or request.form.get("entertainment_no") or request.form.get(
+        "general_yes") \
+            or request.form.get("general_no") or request.form.get("health_yes") or request.form.get("health_no") \
+            or request.form.get("science_yes") or request.form.get("science_no") or request.form.get("sports_yes") \
             or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no"):
         first_name = request.form['firstName']
         if first_name:
@@ -234,7 +239,7 @@ def editProfile(username, db):
             User.changeValue(db, about_me, "about_me", user.id)
         getCheckBox("business", db, user.id)
         getCheckBox("entertainment", db, user.id)
-        getCheckBox("general1", db, user.id)
+        getCheckBox("general", db, user.id)
         getCheckBox("health", db, user.id)
         getCheckBox("science", db, user.id)
         getCheckBox("sports", db, user.id)
