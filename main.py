@@ -6,6 +6,7 @@ from __init__ import app
 
 mysql = MySQL(app)
 
+#testing
 
 @app.route('/')
 def index():
