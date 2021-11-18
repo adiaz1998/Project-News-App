@@ -40,12 +40,11 @@ def settings():
 
 
 @app.route('/edit_password.html')
-@auth.login_required
 def edit_password():
-    #if g.user:
-    return render_template("edit_password.html")
-    #else:
-       # render_template("login-form.html")
+    if g.user:
+        return render_template("edit_password.html")
+    else:
+        return render_template("login-form.html")
 
 
 @app.before_request
