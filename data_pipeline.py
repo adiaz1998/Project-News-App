@@ -4,6 +4,8 @@
 # lol
 
 import json
+
+from flask import jsonify
 from requests.api import get
 from main import mysql
 import pandas as pd
@@ -11,6 +13,8 @@ from newsapi import NewsApiClient
 import pymysql
 
 # Init
+from user import User
+
 newsapi = NewsApiClient(api_key='cc25f61892174ebf82454d80258ad77e')
 
 
