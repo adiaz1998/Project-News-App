@@ -2,6 +2,7 @@ from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
 from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
 from newsfeed import retrieveNewsFeed
+from follow import retrieveUsers
 from __init__ import app
 
 mysql = MySQL(app)
@@ -65,6 +66,9 @@ def logout():
 def resetpage():
     return render_template("password_reset.html")
 
+@app.route('/users.html')
+def usersPage():
+    return render_template("users.html")
 
 @app.route("/register", methods=['POST'])
 def register():
@@ -114,6 +118,10 @@ def get_newsfeed(username):
         g.user = username
         return retrieveNewsFeed(username, mysql)
     return redirect(url_for('index'))
+
+@app.route("/users", methods=['GET'])
+def get_users():
+    return retrieveUsers(mysql)
 
 
 if __name__ == '__main__':
