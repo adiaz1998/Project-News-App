@@ -80,7 +80,7 @@ def login():
     return signIn(mysql)
 
 
-@app.route("/user/<username>", methods=['GET'])
+@app.route("/profile/<username>", methods=['GET'])
 def user(username):
     if g.user:
         g.user = username
@@ -98,9 +98,10 @@ def reset_token(token):
     return resetPassword(token, mysql)
 
 
-@app.route('/edit_profile', methods=['POST'])
-def edit_profile():
+@app.route('/profile/<username>', methods=['POST'])
+def edit_profile(username):
     if g.user:
+        g.user = username
         return editProfile(g.user, mysql)
     return redirect(url_for('index'))
 
