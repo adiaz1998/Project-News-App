@@ -448,3 +448,7 @@ input[type="email"] {
 .article_elements_right label {
     font-size: smaller;
 }
+
+.dataTables_wrapper {
+    color: black;
+}

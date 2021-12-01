@@ -41,8 +41,36 @@
           <li><h3>{{ user.last_name }}</h3></li>
           <li><h2>About Me: </h2></li>
           <li><h3>{{ user.about_me  }} </h3></li>
+           <li><h2>Preference : </h2></li>
+           {% if user.business == 1 %}
+	        <li><h3>business</h3></li>
+            {% endif %}
+           {% if user.entertainment == 1 %}
+	        <li><h3>entertainment</h3></li>
+            {% endif %}
+             {% if user.general == 1 %}
+	        <li><h3>general</h3></li>
+            {% endif %}
+           {% if user.health == 1 %}
+	        <li><h3>health</h3></li>
+            {% endif %}
+           {% if  user.science == 1 %}
+	        <li><h3>science</h3></li>
+            {% endif %}
+           {% if user.sports == 1 %}
+	        <li><h3>sports</h3></li>
+            {% endif %}
+           {% if user.technology == 1 %}
+	        <li><h3>technology</h3></li>
+            {% endif %}
        </ul>
     </div>
+
+  <div style="width:800px; margin:0 auto;">
+      <input type="text" id="fname" name="fname"><br><br>
+       <input type="submit" value="Submit">
+  </div>
 </body>
+
 </html>
 
