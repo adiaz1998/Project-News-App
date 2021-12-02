@@ -1,7 +1,5 @@
 import pymysql
-from flask import jsonify, render_template
-
-from user import User
+from flask import jsonify
 
 
 def retrieveUsers(db):
