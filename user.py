@@ -166,6 +166,7 @@ def signIn(db):
         if user and sha256_crypt.verify(password, user.password):
             session['logged_in'] = True
             session['user'] = request.form['username']
+            session['id'] = user.id
             return redirect(url_for('homepage')), 301
         else:
             msg = "Error. Invalid username or password"
