@@ -2,7 +2,7 @@ from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
 from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
 from newsfeed import retrieveNewsFeed
-from follow import retrieveUsers, followUser, unfollowUser, userFollowerList
+from follow import retrieveUsers, followUser, unfollowUser, userFollowingList, userFollowersList, verifyIfUserFollow
 from __init__ import app
 
 mysql = MySQL(app)
@@ -137,9 +137,19 @@ def unfollow_user(userID, userID2):
     return unfollowUser(userID, userID2, mysql)
 
 
-@app.route("/profile/<userID>/followers", methods=['GET'])
+@app.route("/profile/<userID>/following", methods=['GET'])
 def get_followingList(userID):
-    return userFollowerList(userID, mysql)
+    return userFollowingList(userID, mysql)
+
+
+@app.route("/profile/<userID>/followers", methods=['GET'])
+def get_followersList(userID):
+    return userFollowersList(userID, mysql)
+
+
+@app.route("/profile/<userID>/follows/<userID2>", methods=['GET'])
+def verifyIfUserFollows(userID, userID2):
+    return verifyIfUserFollow(userID, userID2, mysql)
 
 
 if __name__ == '__main__':
