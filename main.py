@@ -2,7 +2,7 @@ from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
 from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
 from newsfeed import retrieveNewsFeed
-from follow import retrieveUsers
+from follow import retrieveUsers, followUser, unfollowUser, userFollowerList
 from __init__ import app
 
 mysql = MySQL(app)
@@ -51,7 +51,6 @@ def edit_password():
 @app.before_request
 def before_request():
     g.user = None
-
     if 'user' in session:
         g.user = session['user']
 
@@ -66,9 +65,11 @@ def logout():
 def resetpage():
     return render_template("password_reset.html")
 
+
 @app.route('/users.html')
 def usersPage():
     return render_template("users.html")
+
 
 @app.route("/register", methods=['POST'])
 def register():
@@ -120,9 +121,25 @@ def get_newsfeed(username):
         return retrieveNewsFeed(username, mysql)
     return redirect(url_for('index'))
 
+
 @app.route("/users", methods=['GET'])
 def get_users():
     return retrieveUsers(mysql)
+
+
+@app.route("/profile/<userID>/follow/<userID2>", methods=['POST'])
+def follow_user(userID, userID2):
+    return followUser(userID, userID2, mysql)
+
+
+@app.route("/profile/<userID>/unfollow/<userID2>", methods=['DELETE'])
+def unfollow_user(userID, userID2):
+    return unfollowUser(userID, userID2, mysql)
+
+
+@app.route("/profile/<userID>/followers", methods=['GET'])
+def get_followingList(userID):
+    return userFollowerList(userID, mysql)
 
 
 if __name__ == '__main__':

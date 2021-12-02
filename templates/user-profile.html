@@ -8,6 +8,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <title>User Profile</title>
     <link
       href="https://fonts.googleapis.com/css?family=Raleway"
@@ -63,13 +64,85 @@
            {% if user.technology == 1 %}
 	        <li><h3>technology</h3></li>
             {% endif %}
+            {% if session['user'] != user.username %}
+           <button type="submit" class="follow">Follow</button>
+           <button type="submit" class="unfollow">Unfollow</button>
+           {% endif %}
        </ul>
     </div>
 
-  <div style="width:800px; margin:0 auto;">
-      <input type="text" id="fname" name="fname"><br><br>
-       <input type="submit" value="Submit">
-  </div>
+    <div>
+      <table id="followers" border='1'>
+        <tr>
+            <th>First Name</th>
+             <th>Last Name</th>
+             <th>Username</th>
+        </tr>
+    </table>
+    </div>
+    <script>
+      var currentUserID = JSON.parse("{{ session['id'] | tojson }}");
+      var userID = JSON.parse("{{ user.id | tojson }}")
+      $(document).ready(function () {
+        $(".follow").click(function()
+        {
+            var currentUserID = JSON.parse("{{ session['id'] | tojson }}");
+            var userID = JSON.parse("{{ user.id | tojson }}")
+            $.ajax({
+                type:'POST',
+                url:'http://127.0.0.1:5000/profile/' + currentUserID + '/follow/' + userID,
+                success: function(data)
+                {
+                  alert(data['message']);
+                },
+                error: function(errorMessage)
+                {
+                  alert(errorMessage);
+                }
+            });
+        });
+        $(".unfollow").click(function()
+        {
+            var currentUserID = JSON.parse("{{ session['id'] | tojson }}");
+            var userID = JSON.parse("{{ user.id | tojson }}")
+            $.ajax({
+                type:'DELETE',
+                url:'http://127.0.0.1:5000/profile/' + currentUserID + '/unfollow/' + userID,
+                success: function(data)
+                {
+                  alert(data['message']);
+                },
+                error: function(errorMessage)
+                {
+                  alert(errorMessage);
+                }
+            });
+        });
+        $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:5000/profile/' + currentUserID + "/followers",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+        console.log(data.followers);
+        data.followers.forEach(row => {
+          console.log(row.last_name);
+          $("#followers tbody").append(
+            "<tr>"
+            +"<td>"+row.first_name+"</td>"
+            +"<td>"+row.last_name+"</td>"
+            +"<td>"+row.username+"</td>"
+            +"</tr>" )
+        })
+      },
+
+        error: function (errorMessage) {
+
+            alert(errorMessage);
+        }
+    });
+    });
+    </script>
+
 </body>
 
 </html>
