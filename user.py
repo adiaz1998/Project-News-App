@@ -30,7 +30,6 @@ class User(UserMixin):
         self.sports = sports
         self.technology = technology
         self.about_me = about_me
-        #kleywords
         self.keywords = keywords
 
     def is_authenticated(self):
