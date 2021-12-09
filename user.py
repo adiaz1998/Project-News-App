@@ -30,8 +30,7 @@ class User(UserMixin):
         self.sports = sports
         self.technology = technology
         self.about_me = about_me
-        #work please..
-        self.keywords = keywords
+        self.keywords = keywords 
 
     def is_authenticated(self):
         return True
@@ -50,6 +49,7 @@ class User(UserMixin):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
+    # Retrieve a user based on the field given
     @classmethod
     def getUser(cls, db, input, field):
         connection = db.connect()
@@ -59,22 +59,22 @@ class User(UserMixin):
         row = cursor.fetchone()
         if row:
             user = cls(*list(row.values()))
-            for rw in row:
-                print(rw)
         else:
             user = None
         connection.close()
         return user
 
+    # Change a value for that particular User
     @classmethod
     def changeValue(cls, db, input, field, user_id):
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "UPDATE users SET " + field + " = %s WHERE id = %s"
+        query = "UPDATE users SET " + field + " = %s WHERE user_id = %s"
         print(query)
         cursor.execute(query, (input, user_id,))
         connection.commit()
 
+    # Generate a token
     def generate_token(self, expires=600):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires)
         return serial.dumps({"user_id": self.id}).decode("utf-8")
@@ -96,7 +96,20 @@ def getPreference(preference):
         print(preference + " = FALSE")
         return False
 
-def getKeywords(keyword):
+
+def getCheckBox(preference, db, username):
+    if request.form.get(preference + "_yes"):
+        User.changeValue(db, 1, preference, username)
+    elif request.form.get(preference + "_no"):
+        User.changeValue(db, 0, preference, username)
+    else:
+        None
+
+def getKeyWords(key_wrds):
+    if request.form.get("keywords"):
+        return key_wrds
+    else:
+        print("no keywords inputted")
 
 def registerUser(db):
     data = ""
@@ -120,6 +133,14 @@ def registerUser(db):
         sports = getPreference("sports_checkbox")
         technology = getPreference("technology_checkbox")
 
+        #User Keywords
+        keywords = getKeyWords(request.form['keywords'])
+        print(keywords)
+
+        if not business and not entertainment and not general and not health and not science and not sports and not \
+                technology:
+            general = True
+
         if User.getUser(db, username, "username"):
             data = "A user with the username already exists"
             return render_template('signup-form.html', data=data), 400
@@ -130,14 +151,12 @@ def registerUser(db):
 
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
+        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
         cursor.execute(query, (
             first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
-            technology,))
+            technology, keywords,))
         connection.commit()
         data = "User created successfully!"
-      
-        
         return render_template('signup-form.html', data=data), 201
 
     elif request.method == 'POST':
@@ -150,7 +169,6 @@ def registerUser(db):
 
 
 def signIn(db):
-
     if request.method == 'POST' and request.form.get("username") and request.form.get("password"):
         username = request.form['username']
         password = request.form['password']
@@ -158,6 +176,7 @@ def signIn(db):
         if user and sha256_crypt.verify(password, user.password):
             session['logged_in'] = True
             session['user'] = request.form['username']
+            session['id'] = user.id
             return redirect(url_for('homepage')), 301
         else:
             msg = "Error. Invalid username or password"
@@ -169,7 +188,11 @@ def signIn(db):
         data = "The server has encountered a situation it does not know how to handle."
         return render_template('signup-form.html', data=data), 500
 
-    
+
+def getHomePage(username, db):
+    user1 = User.getUser(db, username, "username")
+    return render_template("homepage.html", user=user1, _external=True)
+
 
 def userProfile(username, db):
     user = User.getUser(db, username, "username")
@@ -183,7 +206,6 @@ def send_mail(user):
     To reset your password. Please follow the link below.
     
     http://127.0.0.1:5000{url_for('reset_token', token=token)}
-
     If you didn't send a password reset request. Please ignore this message.
     
     '''
@@ -214,13 +236,13 @@ def resetPassword(token, db):
 
 def editProfile(username, db):
     user = User.getUser(db, username, "username")
-    if request.method == 'POST' and request.form.get("username") or request.form.get("firstName") or request.form.get(
-            "lastName") \
-            or request.form.get("aboutMe"):
-        username = request.form['username']
-        if username:
-            User.changeValue(db, username, "username", user.id)
-            session['user'] = request.form['username']
+    if request.method == 'POST' and request.form.get("firstName") or request.form.get("lastName") or \
+            request.form.get("aboutMe") or request.form.get("business_yes") or request.form.get("business_no") \
+            or request.form.get("entertainment_yes") or request.form.get("entertainment_no") or request.form.get(
+        "general_yes") \
+            or request.form.get("general_no") or request.form.get("health_yes") or request.form.get("health_no") \
+            or request.form.get("science_yes") or request.form.get("science_no") or request.form.get("sports_yes") \
+            or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no"):
         first_name = request.form['firstName']
         if first_name:
             User.changeValue(db, first_name, "first_name", user.id)
@@ -228,13 +250,22 @@ def editProfile(username, db):
         if last_name:
             User.changeValue(db, last_name, "last_name", user.id)
         about_me = request.form['aboutMe']
+
         if about_me:
             User.changeValue(db, about_me, "about_me", user.id)
+        getCheckBox("business", db, user.id)
+        getCheckBox("entertainment", db, user.id)
+        getCheckBox("general", db, user.id)
+        getCheckBox("health", db, user.id)
+        getCheckBox("science", db, user.id)
+        getCheckBox("sports", db, user.id)
+        getCheckBox("technology", db, user.id)
         data = "User Profile has been successfully updated"
+
         return render_template('settings.html', data=data), 200
     elif request.method == 'POST':
         data = "You haven't filled out anything"
-        return render_template("login-form.html", data=data), 400
+        return render_template("signup-form.html", data=data), 400
     else:
         data = "The server has encountered a situation it does not know how to handle."
         return render_template('signup-form.html', data=data), 500
