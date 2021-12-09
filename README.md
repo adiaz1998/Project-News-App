@@ -28,8 +28,13 @@ Example Usage (you can experiment yourself by opening the application and regist
        HTML, CSS, Vanilla JS, JQuery, Jinja
 
    #### Back-End
-       Python(Flask), Apache, Linux, AWS, Docker
+       Python(Flask), Apache, Linux, Docker
 
+   #### Hosting
+       AWS
+       
+   #### Source Code Management
+       Github
 # Credits
 
 Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibade, and Brandon Morales.
