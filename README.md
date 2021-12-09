@@ -31,7 +31,7 @@ Example Usage (you can experiment yourself by opening the application and regist
        Python(Flask), Apache, Linux, Docker
 
    #### Hosting
-       AWS
+       AWS RDS
        
    #### Source Code Management
        Github
