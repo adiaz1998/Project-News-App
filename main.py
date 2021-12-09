@@ -1,6 +1,6 @@
 from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
-from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword
+from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword, getHomePage
 from newsfeed import retrieveNewsFeed
 from follow import retrieveUsers
 from __init__ import app
@@ -11,9 +11,8 @@ mysql = MySQL(app)
 @app.route('/')
 def index():
     if g.user:
-        return render_template("homepage.html")
+        return getHomePage(g.user, mysql)
     return render_template("login-form.html")
-
 
 @app.route('/login-form.html')
 def login_form():
@@ -28,7 +27,9 @@ def signup_form():
 @app.route('/homepage.html')
 def homepage():
     if g.user:
-        return render_template("homepage.html")
+        print(" \n\nAWFAFWAFAFWAFDWAFWAFWA \n\n\n\n LAWFAWFA" + str(g.user))
+        return getHomePage(g.user, mysql)
+        #return render_template("homepage.html")
     return redirect(url_for('index'))
 
 
@@ -37,6 +38,7 @@ def settings():
     if g.user:
         return render_template("settings.html")
     else:
+        print("lol")
         render_template("login-form.html")
 
 
