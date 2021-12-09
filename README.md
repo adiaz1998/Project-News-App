@@ -4,7 +4,7 @@ Project for CS-490
 
 
 
-#Credits
+# Credits
 
 Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibadge, and Brandon Morales.
 
