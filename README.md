@@ -20,6 +20,15 @@ Example Usage (you can experiment yourself by opening the application and regist
 
 # 
 
+# Tech Stack
+## Database
+MySQL Server, MySQL Workbench
+
+## Front-End
+HTML, CSS, Vanilla JS, JQuery, Jinja
+
+## Back-End
+Python(Flask), Apache, Linux
 
 # Credits
 
