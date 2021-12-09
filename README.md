@@ -15,6 +15,6 @@ This project was created in the
 
 Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibadge, and Brandon Morales.
 
-This project will be continously worked and improved on after submitted by:
+This project will be continously worked and improved on after submission date by:
 * Alan Diaz
 * Adam Asimolowo
