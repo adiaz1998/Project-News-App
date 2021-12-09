@@ -14,7 +14,7 @@ from werkzeug.utils import redirect
 class User(UserMixin):
     def __init__(self, _id, first_name, last_name, username, password, email, business, entertainment, general, health,
                  science,
-                 sports, technology, about_me):
+                 sports, technology, about_me, keywords):
 
         self.id = _id
         self.first_name = first_name
@@ -30,6 +30,7 @@ class User(UserMixin):
         self.sports = sports
         self.technology = technology
         self.about_me = about_me
+        self.keywords = keywords 
 
     def is_authenticated(self):
         return True
@@ -104,6 +105,11 @@ def getCheckBox(preference, db, username):
     else:
         None
 
+def getKeyWords(key_wrds):
+    if request.form.get("keywords"):
+        return key_wrds
+    else:
+        print("no keywords inputted")
 
 def registerUser(db):
     data = ""
@@ -127,6 +133,10 @@ def registerUser(db):
         sports = getPreference("sports_checkbox")
         technology = getPreference("technology_checkbox")
 
+        #User Keywords
+        keywords = getKeyWords(request.form['keywords'])
+        print(keywords)
+
         if not business and not entertainment and not general and not health and not science and not sports and not \
                 technology:
             general = True
@@ -141,10 +151,10 @@ def registerUser(db):
 
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
+        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
         cursor.execute(query, (
             first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
-            technology,))
+            technology, keywords,))
         connection.commit()
         data = "User created successfully!"
         return render_template('signup-form.html', data=data), 201
@@ -179,6 +189,11 @@ def signIn(db):
         return render_template('signup-form.html', data=data), 500
 
 
+def getHomePage(username, db):
+    user1 = User.getUser(db, username, "username")
+    return render_template("homepage.html", user=user1, _external=True)
+
+
 def userProfile(username, db):
     user = User.getUser(db, username, "username")
     return render_template("user-profile.html", user=user, _external=True)
@@ -191,7 +206,6 @@ def send_mail(user):
     To reset your password. Please follow the link below.
     
     http://127.0.0.1:5000{url_for('reset_token', token=token)}
-
     If you didn't send a password reset request. Please ignore this message.
     
     '''
@@ -236,6 +250,7 @@ def editProfile(username, db):
         if last_name:
             User.changeValue(db, last_name, "last_name", user.id)
         about_me = request.form['aboutMe']
+
         if about_me:
             User.changeValue(db, about_me, "about_me", user.id)
         getCheckBox("business", db, user.id)

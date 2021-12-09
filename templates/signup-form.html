@@ -36,7 +36,9 @@
         <div class="form-wrap">
             <h1>SP News</h1>
             <p>Create your SP News account</p>
-            <form action="http://127.0.0.1:5000/register" method="post">
+
+            <form action="/register" method="post">
+
                 <div class="form-group">
                     <label for="first-name">First Name</label>
                     <input type="text" name="firstName" id="first-name" />
@@ -93,7 +95,8 @@
                     </div>
 
                     </div>
-                <div class="article_form">
+
+                <div class="article_form" style = "/*background-color: red;*/ height: 190px;">
                     <h4 style="text-align: center;">Article Preferences</h4>
                     <h6 style="text-align: center;">(Select all that apply)</h6>
 
@@ -122,8 +125,19 @@
                         <label for="sports_checkbox">Sports</label><br>
 
                     </div>
+
+                    
                 </div>
 
+                <div class = "form-group">
+                    <label for="keywords">Keywords</label>
+                    <input type="text" name="keywords" id="keywords"/>
+                </div>
+
+                <!--<div class="form-group">
+                    <label for="keyword">Keywords</label>
+                    <input type="text" name="keyword" id="keyword" />
+                </div>!-->
 
                 <button type="submit" class="btn">Sign Up</button>
 
