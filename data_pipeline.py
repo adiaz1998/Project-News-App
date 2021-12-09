@@ -58,6 +58,9 @@ print("\n\n")
 #afterwards, loop through that list and use the getEverything function for each of those keywords
 #getEverything("bitcoin")
 
+
+
+
 def getTopHeadLines(cat):
     top_headlines = newsapi.get_top_headlines(#q='bitcoin',
                                             category=cat,
@@ -73,14 +76,12 @@ def getTopHeadLines(cat):
 
 
 def getHeadlineProperties(var, cat):
-    
     title = []
     authors = []
     urls = []
     date_time = []
     category = []
     sum = 0
-
     for item, value in var.items():
         #print(item, value)
         #print(str(item), str(value) + "\n")
@@ -89,7 +90,7 @@ def getHeadlineProperties(var, cat):
             for i in value:
                 sum = sum + 1
                 print(sum)
-                if sum >= 14:
+                if sum >= 10:
                     break
                 else:
                     #utilize an list to append all the values within the JSON file into a list
