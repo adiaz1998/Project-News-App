@@ -34,7 +34,7 @@ Example Usage (you can experiment yourself by opening the application and regist
        AWS RDS
        
    #### Source Code Management
-       Github
+       GitHub Free 
 # Credits
 
 Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibade, and Brandon Morales.
