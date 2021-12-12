@@ -9,7 +9,7 @@ SP News was developed for serving as a personal news app in which users, from al
 SP News utilizes an API from newsfeed.api for content delivery. Our application offers several article categories consisting of: Business, Entertainment, General, Health, Science, Sports, and Technology.
 
 ### Cool Features
-For those of you that do not read articles in one-go, fret not, users can favorite articles (which allows the article to remain permanently on their newsfeed).
+For those of you that do not read articles in one-go, fret not, users can favorite articles to return to at another time. (Favoriting an article  allows the article to remain permanently on a users newsfeed).
 
 Users can also follow other users who are utilizing the application, and also view which articles are the hottest at the moment.
 
