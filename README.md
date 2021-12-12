@@ -4,7 +4,7 @@ Project for CS-490
 # Introduction
 ![image](https://user-images.githubusercontent.com/64811750/145329440-2ee610c8-bdef-4448-96e3-f3d194228370.png)
 
-SP News was developed for serving as a personal news app in which users, from all parts of life, can partake in viewing news articles of their preferenced categories throughout their day.
+SP News was developed for serving as a personal news app in which users, from all parts of life can partake in viewing news articles of their preferenced categories throughout their day.
 
 SP News utilizes an API from newsfeed.api for content delivery. Our application offers several article categories consisting of: Business, Entertainment, General, Health, Science, Sports, and Technology.
 
