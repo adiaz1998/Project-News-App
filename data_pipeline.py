@@ -5,60 +5,137 @@
 
 import json
 from newsapi.const import SOURCES_URL
+from pymysql.connections import MysqlPacket
+from requests import NullHandler
 from requests.api import get
 from main import mysql
 import pandas as pd
 from newsapi import NewsApiClient
 import pymysql
+from user import User
 
 # Init
 newsapi = NewsApiClient(api_key='cc25f61892174ebf82454d80258ad77e')
 
-
-
-
-#print(all_articles)
-
 sum = 0
-
-
 def getEverything(keyword):
     sum = 0 
 
     all_articles = newsapi.get_everything(q=keyword,
-                                      #sources='bbc-news,the-verge',
-                                      #domains='bbc.co.uk,techcrunch.com',
                                       from_param='2021-12-01',
                                       to='2021-12-07',
                                       language='en',
                                       sort_by='relevancy',
                                       page=1)
-
-    for item, value in all_articles.items():
-        #print(item, value)
-        if item == "articles":
-                #print(value)
-            for i in value:
-                #print(i)
-                sum = sum + 1
-                print(sum)
-                if sum >= 14:
-                    break
-                else:
-                    print(i['title'])
-
     return all_articles
-
-ok1 = json.dumps(getEverything("tom"), indent = 4)
-print(ok1)
-print("\n\n")
 
 #PSUEDECODE
 #split the keywords given by a user and add them into a list
 #afterwards, loop through that list and use the getEverything function for each of those keywords
 #getEverything("bitcoin")
 
+#loop through all the users currently within the database and get their keywords; once u get their keywords, save those keywords in the newsfeed table
 
+#query through all users in the users table list and retrieve their keywords
+
+query1 = "SELECT keywords FROM users"
+
+keywords = []
+
+def getKeyWords(db):
+
+    connection = db.connect() 
+    if connection:
+        print("connection made")
+        cursor = connection.cursor(pymysql.cursors.DictCursor) #the cursor is utilized for querying sql databases
+        if cursor:
+            print("cursor variable found")
+            query = "SELECT keywords FROM users"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            users_length = len(rows)
+            print(rows)
+
+            for i in range(users_length):
+                for index, value in rows[i].items():
+                    if value != None:
+                        try:
+                            keywords_split = value.split( )
+                            print(keywords_split)
+                            keywords.append(keywords_split)
+                        except:
+                            print("user only had one keyword in the newsfeed table")
+                    else:
+                        print("User has no keywords.. therefore we will not add it to the keyword article search to save resources")
+            print(keywords)
+            connection.commit()
+
+                        #for i = 0, i <= 2400000, i+= 2200000 #will run this script twice a day
+    elif not connection:
+        print("ERROR: connection not made...")
+
+#ok1 = json.dumps(getEverything("tom"), indent = 4)
+#print(ok1)
+print("\n\n\n\n")
+
+getKeyWords(mysql)
+
+articles = []
+
+def executeKeyWords():
+
+    keywords_title = []
+    keywords_authors = []
+    keywords_urls = []
+    keywords_date_time = []
+    keywords_category = []
+    cat = "keywords"
+
+    sum = 0  
+    for i in keywords:
+        print(len(i))
+
+        for j in i:
+            print("\n")
+            print(j)
+            all_articles = getEverything(j)
+            #articles.append(getEverything(j))
+            #print(all_articles)
+
+            for item, value in all_articles.items():
+                #print(item, value)
+                if item == "articles":
+                        #print(value)
+                    for i in value:
+                        #print(i)
+                        sum = sum + 1
+                        print(sum)
+                        if sum >= 12:
+                            sum = 0
+                            break
+                        else:
+
+                            keywords_title.append(i['title'])
+                            keywords_authors.append(i['author'])
+                            keywords_urls.append(i['url'])
+                            keywords_date_time.append(i['publishedAt'])
+                            keywords_category.append(j)
+
+                            print(i['title'])
+                            print(i['url'])
+                            print(i['publishedAt'])
+                            print(i['title'])
+            
+        return keywords_authors, keywords_urls, keywords_date_time, keywords_title, keywords_category
+    
+            
+           
+
+print(sum)
+#print(articles)
+pp = executeKeyWords()
+print(pp)
+print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 
 def getTopHeadLines(cat):
@@ -74,6 +151,9 @@ def getTopHeadLines(cat):
 # THE DATAPIPELINE NEEDS TO READ WHAT THE USERs KEYWORDS ARE AND THEN FILTER THE 
 # ARTICLES BASED ON THOSE SPECIFIC KEYWORDS
 
+
+kk = getTopHeadLines("business")
+print(kk) 
 
 def getHeadlineProperties(var, cat):
     title = []
@@ -111,7 +191,9 @@ properties_health = getHeadlineProperties(getTopHeadLines('health'), 'health')
 properties_science = getHeadlineProperties(getTopHeadLines('science'), 'science')
 properties_sports = getHeadlineProperties(getTopHeadLines('sports'), 'sports')
 properties_entertainment = getHeadlineProperties(getTopHeadLines('entertainment'), 'entertainment')
+properties_keywords = executeKeyWords()
 
+#print(properties_entertainment)
 
 def getLengthArticles(var):
 
@@ -135,6 +217,7 @@ def convertPropertiesToDF(properties_cat):
 
         dataFrame = pd.DataFrame(data)
         print("\n")
+        print(dataFrame)
         return dataFrame
     else:
         print("data not found")
@@ -156,7 +239,8 @@ article_preference_dictionary = {
     4 : convertPropertiesToDF(properties_sports),
     5 : convertPropertiesToDF(properties_health),
     6 : convertPropertiesToDF(properties_science),
-    7 : convertPropertiesToDF(properties_entertainment)
+    7 : convertPropertiesToDF(properties_entertainment),
+    8 : convertPropertiesToDF(properties_keywords)
 
     #1 = business
     #2 = technology
@@ -168,6 +252,7 @@ article_preference_dictionary = {
 
 }
 
+print(article_preference_dictionary[1])
 #get the length of the dictionary 
 print(len(article_preference_dictionary))
 
@@ -213,12 +298,11 @@ def insert_newsfeed_data(db):
                     #print(v['category'])
                     #print(v['urls'])
                     
-                    
-                    query2 = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s)"
+                    query2 = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s, %s)"
 
                     if query2:
     
-                        cursor.execute(query2, (v['title'], v['urls'], v['date_time'], v['category'],))
+                        cursor.execute(query2, (v['authors'], v['title'], v['urls'], v['date_time'], v['category'],))
                         print("imported into database")
 
                     connection.commit()
