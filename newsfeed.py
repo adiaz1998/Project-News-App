@@ -55,7 +55,7 @@ def retrieveNewsFeed(username, db):
         elif User.getUser(db, 0, preference):
             pass
 
-    if user:
+    if keywords:
         for keyword in keywords:
             for word in keyword: #we want to search for the category with the key term each iteration
                 connection = db.connect() #for user_id = 86, we'll make three connections

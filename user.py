@@ -14,7 +14,7 @@ from werkzeug.utils import redirect
 class User(UserMixin):
     def __init__(self, _id, first_name, last_name, username, password, email, business, entertainment, general, health,
                  science,
-                 sports, technology, about_me, keywords):
+                 sports, technology, keywords, about_me):
 
         self.id = _id
         self.first_name = first_name
@@ -29,8 +29,8 @@ class User(UserMixin):
         self.science = science
         self.sports = sports
         self.technology = technology
+        self.keywords  = keywords
         self.about_me = about_me
-        self.keywords = keywords 
 
     def is_authenticated(self):
         return True
@@ -70,7 +70,6 @@ class User(UserMixin):
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = "UPDATE users SET " + field + " = %s WHERE user_id = %s"
-        print(query)
         cursor.execute(query, (input, user_id,))
         connection.commit()
 
@@ -109,7 +108,8 @@ def getKeyWords(key_wrds):
     if request.form.get("keywords"):
         return key_wrds
     else:
-        print("no keywords inputted")
+        return None
+        #print("no keywords inputted")
 
 def registerUser(db):
     data = ""
@@ -190,8 +190,8 @@ def signIn(db):
 
 
 def getHomePage(username, db):
-    user1 = User.getUser(db, username, "username")
-    return render_template("homepage.html", user=user1, _external=True)
+    user = User.getUser(db, username, "username")
+    return render_template("homepage.html", user=user, _external=True)
 
 
 def userProfile(username, db):
@@ -242,17 +242,24 @@ def editProfile(username, db):
         "general_yes") \
             or request.form.get("general_no") or request.form.get("health_yes") or request.form.get("health_no") \
             or request.form.get("science_yes") or request.form.get("science_no") or request.form.get("sports_yes") \
-            or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no"):
+            or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no") \
+            or request.form.get("keyWord"):
         first_name = request.form['firstName']
         if first_name:
             User.changeValue(db, first_name, "first_name", user.id)
+        
         last_name = request.form['lastName']
         if last_name:
             User.changeValue(db, last_name, "last_name", user.id)
+        
         about_me = request.form['aboutMe']
-
         if about_me:
             User.changeValue(db, about_me, "about_me", user.id)
+
+        keywords = request.form['keyWord']
+        if keywords:
+            User.changeValue(db, keywords, "keywords", user.id)
+
         getCheckBox("business", db, user.id)
         getCheckBox("entertainment", db, user.id)
         getCheckBox("general", db, user.id)
@@ -265,10 +272,10 @@ def editProfile(username, db):
         return render_template('settings.html', data=data), 200
     elif request.method == 'POST':
         data = "You haven't filled out anything"
-        return render_template("signup-form.html", data=data), 400
+        return render_template("settings.html", data=data), 400
     else:
         data = "The server has encountered a situation it does not know how to handle."
-        return render_template('signup-form.html', data=data), 500
+        return render_template('settings.html', data=data), 500
 
 
 def changePassword(username, db):

@@ -66,6 +66,9 @@
            {% if user.technology == 1 %}
 	        <li><h3>technology</h3></li>
             {% endif %}
+           {% if user.keywords %}
+            <li><h3>{{ user.keywords }}</h3></li>
+           {% endif %}
             {% if session['user'] != user.username %}
            <button type="submit" class="follow" hidden="hidden">Follow</button>
            <button type="submit" class="unfollow" hidden="hidden">Unfollow</button>

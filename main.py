@@ -1,6 +1,7 @@
 from flask import session, render_template, redirect, g, url_for
 from flaskext.mysql import MySQL
-from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword, getHomePage
+from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword, \
+    getHomePage
 from newsfeed import retrieveNewsFeed
 from follow import retrieveUsers, followUser, unfollowUser, userFollowingList, userFollowersList, verifyIfUserFollow
 from __init__ import app
