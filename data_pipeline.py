@@ -1,7 +1,7 @@
-#MAKE SURE
 #Updates twice a day
 #Need to have this pipeline running in docker
-#lol
+
+#Written by Adam Asimolowo
 
 import json
 from newsapi.const import SOURCES_URL
@@ -46,6 +46,7 @@ def getKeyWords(db):
 
     connection = db.connect() 
     if connection:
+
         print("connection made")
         cursor = connection.cursor(pymysql.cursors.DictCursor) #the cursor is utilized for querying sql databases
         if cursor:
@@ -74,12 +75,14 @@ def getKeyWords(db):
     elif not connection:
         print("ERROR: connection not made...")
 
+    return keywords
 #ok1 = json.dumps(getEverything("tom"), indent = 4)
 #print(ok1)
 print("\n\n\n\n")
 
-getKeyWords(mysql)
-
+keywords_users = getKeyWords(mysql)
+print("BROPLEASEGIVEMETHEWAY")
+print(keywords_users)
 articles = []
 
 def executeKeyWords():
@@ -88,20 +91,19 @@ def executeKeyWords():
     keywords_authors = []
     keywords_urls = []
     keywords_date_time = []
+    keywords_image_urls = []
     keywords_category = []
     cat = "keywords"
 
     sum = 0  
-    for i in keywords:
+    for i in keywords_users:
         print(len(i))
-
         for j in i:
-            print("\n")
+            print("\nLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSS")
             print(j)
             all_articles = getEverything(j)
             #articles.append(getEverything(j))
             #print(all_articles)
-
             for item, value in all_articles.items():
                 #print(item, value)
                 if item == "articles":
@@ -110,7 +112,7 @@ def executeKeyWords():
                         #print(i)
                         sum = sum + 1
                         print(sum)
-                        if sum >= 12:
+                        if sum >= 10:
                             sum = 0
                             break
                         else:
@@ -119,6 +121,7 @@ def executeKeyWords():
                             keywords_authors.append(i['author'])
                             keywords_urls.append(i['url'])
                             keywords_date_time.append(i['publishedAt'])
+                            keywords_image_urls.append(i['urlToImage'])
                             keywords_category.append(j)
 
                             print(i['title'])
@@ -126,7 +129,7 @@ def executeKeyWords():
                             print(i['publishedAt'])
                             print(i['title'])
             
-        return keywords_authors, keywords_urls, keywords_date_time, keywords_title, keywords_category
+    return keywords_authors, keywords_urls, keywords_date_time, keywords_title, keywords_image_urls, keywords_category
     
             
            
@@ -156,12 +159,15 @@ kk = getTopHeadLines("business")
 print(kk) 
 
 def getHeadlineProperties(var, cat):
+
     title = []
     authors = []
     urls = []
     date_time = []
     category = []
+    image_urls = []
     sum = 0
+
     for item, value in var.items():
         #print(item, value)
         #print(str(item), str(value) + "\n")
@@ -178,11 +184,12 @@ def getHeadlineProperties(var, cat):
                     urls.append(i['url']) 
                     date_time.append(i['publishedAt'])
                     title.append(i['title'])
+                    image_urls.append(i['urlToImage'])
                     category.append(cat)
                     #if i == "source":
                     #   print('source found')
 
-    return authors, urls, date_time, title, category
+    return authors, urls, date_time, title, image_urls, category
 
 properties_business = getHeadlineProperties(getTopHeadLines('business'), 'business')
 properties_technology = getHeadlineProperties(getTopHeadLines('technology'), 'technology')
@@ -193,32 +200,33 @@ properties_sports = getHeadlineProperties(getTopHeadLines('sports'), 'sports')
 properties_entertainment = getHeadlineProperties(getTopHeadLines('entertainment'), 'entertainment')
 properties_keywords = executeKeyWords()
 
-#print(properties_entertainment)
+print(properties_entertainment)
 
 def getLengthArticles(var):
 
     for item, value in var.items():
         if item == "totalResults":
             print(value)
-
             return value
 
-ok = json.dumps(getTopHeadLines('technology'), indent=4)
-print(ok)
+#ok = json.dumps(getTopHeadLines('technology'), indent=4)
+#print(ok)
 
-print("\n\n\n")
+#print("\n\n\n")
 
 #create COLUMNS FOR EACH PROPERTY; EXAMPLE: DATAFRAMES
 def convertPropertiesToDF(properties_cat):
     
     i = 0
-    data = {'authors': properties_cat[i] , 'urls': properties_cat[i+1] , 'date_time': properties_cat[i+2] , 'title': properties_cat[i+3] , 'category': properties_cat[i+4]}
+    data = {'authors': properties_cat[i] , 'urls': properties_cat[i+1] , 'date_time': properties_cat[i+2] , 'title': properties_cat[i+3] , 'image_urls': properties_cat[i+4], 'category': properties_cat[i+5]}
     if data:
 
         dataFrame = pd.DataFrame(data)
         print("\n")
         print(dataFrame)
+
         return dataFrame
+
     else:
         print("data not found")
     
@@ -285,9 +293,15 @@ def insert_newsfeed_data(db):
         if cursor:
             print("cursor variable found")
 
-            query1 = "TRUNCATE TABLE `newsfeed`"
-
+            #psuedocode, only clear the table for columns that do not have their pipeline id located in the favorites pipeline id
+            query1 ="SET FOREIGN_KEY_CHECKS = 0;"
             cursor.execute(query1)
+            
+            query3 = "TRUNCATE TABLE `newsfeed`;"
+            cursor.execute(query3)
+
+            query4 = "SET FOREIGN_KEY_CHECKS = 1;"
+            cursor.execute(query4)
 
             for i in range(1, (len(article_preference_dictionary)+1)):
                 for k, v in article_preference_dictionary[i].iterrows():
@@ -298,11 +312,11 @@ def insert_newsfeed_data(db):
                     #print(v['category'])
                     #print(v['urls'])
                     
-                    query2 = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s, %s)"
+                    query2 = "INSERT INTO newsfeed VALUES (NULL, %s, %s, %s, %s, %s, %s)"
 
                     if query2:
     
-                        cursor.execute(query2, (v['authors'], v['title'], v['urls'], v['date_time'], v['category'],))
+                        cursor.execute(query2, (v['authors'], v['title'], v['urls'], v['date_time'], v['image_urls'], v['category'],))
                         print("imported into database")
 
                     connection.commit()
