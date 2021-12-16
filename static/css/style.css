@@ -5,11 +5,15 @@
     padding: 0;
 }
 
+
+/*lol*/
+
 body {
     font-family: "Raleway", sans-serif;
     background: #344a72;
     color: #fff;
     line-height: 1.805;
+    margin: 0;
 }
 
 a {
@@ -308,12 +312,16 @@ input[type="email"] {
 }
 
 
-/*homepage css*/
+/*Homepage Navbar CSS [TOP PAGE]*/
+
+.log_out_door {
+    color: black;
+}
 
 .header {
     background-color: whitesmoke;
     height: 30px;
-    box-shadow: 10px -10px #CCC;
+    margin: 0;
 }
 
 .header ul {
@@ -404,6 +412,35 @@ input[type="email"] {
     border-bottom: 2px solid whitesmoke;
 }
 
+
+/*Side Navbar CSS*/
+
+.navbar_side {
+    font-size: 15.5px;
+    /*margin-right: 90%;*/
+    margin-left: 1.25%;
+    height: auto;
+    position: fixed;
+    padding-top: 4.35%;
+    padding-right: 90px;
+}
+
+.navbar_side_content img {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.followers {
+    padding-top: 20%;
+}
+
+.followers ul li {
+    opacity: 0.8;
+    text-shadow: 2px 2px 4px #000000;
+    padding-bottom: 15%;
+}
+
 .search_bar input[type=text] {
     padding: 2px;
     border: none;
@@ -447,4 +484,64 @@ input[type="email"] {
 
 .article_elements_right label {
     font-size: smaller;
+}
+
+.dataTables_wrapper {
+    color: black;
+}
+
+
+/*Newsfeed List CSS Code */
+
+.newsfeed_table {
+    border-spacing: 7px;
+    /*background-color: red;*/
+    padding-top: 1.25%;
+    text-align: center;
+}
+
+.newsfeed_table tr {
+    padding-top: 6%;
+}
+
+.title_row {
+    font-size: 25px;
+}
+
+.title_row {
+    color: #fff;
+    opacity: 0.8;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.title_row td {
+    padding-top: .75%;
+}
+
+.title_row a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.last_row td {
+    padding-bottom: 1.25%;
+}
+
+#bottom {
+    margin-top: 2.5%;
+    padding-bottom: .5%;
+    background-color: #fff;
+}
+
+.footer {
+    text-align: center;
+    color: black;
+}
+
+.images_front {
+    height: 350px;
+    width: 650px;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    filter: drop-shadow(6px 3.5px 2.5px #4f6999);
 }

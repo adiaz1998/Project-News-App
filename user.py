@@ -14,7 +14,7 @@ from werkzeug.utils import redirect
 class User(UserMixin):
     def __init__(self, _id, first_name, last_name, username, password, email, business, entertainment, general, health,
                  science,
-                 sports, technology, about_me):
+                 sports, technology, keywords, about_me):
 
         self.id = _id
         self.first_name = first_name
@@ -29,6 +29,7 @@ class User(UserMixin):
         self.science = science
         self.sports = sports
         self.technology = technology
+        self.keywords  = keywords
         self.about_me = about_me
 
     def is_authenticated(self):
@@ -69,7 +70,6 @@ class User(UserMixin):
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = "UPDATE users SET " + field + " = %s WHERE user_id = %s"
-        print(query)
         cursor.execute(query, (input, user_id,))
         connection.commit()
 
@@ -104,6 +104,12 @@ def getCheckBox(preference, db, username):
     else:
         None
 
+def getKeyWords(key_wrds):
+    if request.form.get("keywords"):
+        return key_wrds
+    else:
+        return None
+        #print("no keywords inputted")
 
 def registerUser(db):
     data = ""
@@ -127,6 +133,10 @@ def registerUser(db):
         sports = getPreference("sports_checkbox")
         technology = getPreference("technology_checkbox")
 
+        #User Keywords
+        keywords = getKeyWords(request.form['keywords'])
+        print(keywords)
+
         if not business and not entertainment and not general and not health and not science and not sports and not \
                 technology:
             general = True
@@ -141,10 +151,10 @@ def registerUser(db):
 
         connection = db.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
+        query = "INSERT INTO users VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL)"
         cursor.execute(query, (
             first_name, last_name, username, password, email, business, entertainment, general, health, science, sports,
-            technology,))
+            technology, keywords,))
         connection.commit()
         data = "User created successfully!"
         return render_template('signup-form.html', data=data), 201
@@ -166,6 +176,7 @@ def signIn(db):
         if user and sha256_crypt.verify(password, user.password):
             session['logged_in'] = True
             session['user'] = request.form['username']
+            session['id'] = user.id
             return redirect(url_for('homepage')), 301
         else:
             msg = "Error. Invalid username or password"
@@ -176,6 +187,11 @@ def signIn(db):
     else:
         data = "The server has encountered a situation it does not know how to handle."
         return render_template('signup-form.html', data=data), 500
+
+
+def getHomePage(username, db):
+    user = User.getUser(db, username, "username")
+    return render_template("homepage.html", user=user, _external=True)
 
 
 def userProfile(username, db):
@@ -190,7 +206,6 @@ def send_mail(user):
     To reset your password. Please follow the link below.
     
     http://127.0.0.1:5000{url_for('reset_token', token=token)}
-
     If you didn't send a password reset request. Please ignore this message.
     
     '''
@@ -227,16 +242,24 @@ def editProfile(username, db):
         "general_yes") \
             or request.form.get("general_no") or request.form.get("health_yes") or request.form.get("health_no") \
             or request.form.get("science_yes") or request.form.get("science_no") or request.form.get("sports_yes") \
-            or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no"):
+            or request.form.get("sports_no") or request.form.get("technology_yes") or request.form.get("technology_no") \
+            or request.form.get("keyWord"):
         first_name = request.form['firstName']
         if first_name:
             User.changeValue(db, first_name, "first_name", user.id)
+        
         last_name = request.form['lastName']
         if last_name:
             User.changeValue(db, last_name, "last_name", user.id)
+        
         about_me = request.form['aboutMe']
         if about_me:
             User.changeValue(db, about_me, "about_me", user.id)
+
+        keywords = request.form['keyWord']
+        if keywords:
+            User.changeValue(db, keywords, "keywords", user.id)
+
         getCheckBox("business", db, user.id)
         getCheckBox("entertainment", db, user.id)
         getCheckBox("general", db, user.id)
@@ -249,10 +272,10 @@ def editProfile(username, db):
         return render_template('settings.html', data=data), 200
     elif request.method == 'POST':
         data = "You haven't filled out anything"
-        return render_template("signup-form.html", data=data), 400
+        return render_template("settings.html", data=data), 400
     else:
         data = "The server has encountered a situation it does not know how to handle."
-        return render_template('signup-form.html', data=data), 500
+        return render_template('settings.html', data=data), 500
 
 
 def changePassword(username, db):
