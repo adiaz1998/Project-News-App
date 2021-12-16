@@ -35,7 +35,7 @@ Example Usage (you can experiment yourself by opening the application and regist
    #### Back-End
        Python(Flask), Apache, Linux, Docker
    
-   #### DataPipeline
+   #### Data Pipeline
         Python, Docker
    #### Hosting
        AWS RDS
