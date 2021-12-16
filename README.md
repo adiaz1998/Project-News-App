@@ -11,7 +11,7 @@ SP News utilizes an API from newsfeed.api for content delivery. Our application 
 ### Cool Features
 For those of you that do not read articles in one-go, fret not, users can favorite articles to return to at another time. (Favoriting an article  allows the article to remain permanently on a users newsfeed).
 
-Users can also follow other users who are utilizing the application, and also view which articles are the hottest at the moment.
+Users can follow other users who are utilizing the application, and also view which articles are the hottest at the moment.
 
 Users can input keywords to see articles of their favorite topics.
 
