@@ -22,11 +22,13 @@
 </head>
 
 <body>
+
     <section id="top">
         <!--this section will need to be manipulated by javascript to be opened only at certain times-->
         <div class="header" style="background-color: red; margin-top: -10px; height: auto; padding-bottom: 0px; font-size: 20px;">
             <header>
-                <p style="text-align: center; font-weight: bold;">Breaking News: Tesla stock price has surpassed $10,500 </p>
+                <!--a href = "https://news.microsoft.com/covid-19-response/"-->
+                <p style="text-align: center; font-weight: bold;"> <a href="https://news.microsoft.com/covid-19-response/" style=" text-decoration: none; color: #fff">Learn more about remote working, online schooling and community support during the COVID-19 outbreak</a></p>
             </header>
         </div>
         <div class="header" style="margin-top: -10px;">
@@ -37,13 +39,9 @@
                         <a href="http://127.0.0.1:5000/logout"><i class="fas fa-door-closed"></i>Log Out</a></li>
                     <li class="child_3"><a href="http://127.0.0.1:5000/edit_password.html">Change Password</a></li>
                     <li><a href="http://127.0.0.1:5000/profile/{{session['user']}}"><i class="fas fa-user "></i>My Account</a></li>
-                    <li><a href="http://127.0.0.1:5000/users.html"><i class="fas fa-users "></i>Users</a></li>
-
                 </ul>
             </header>
         </div>
-
-
 
         <div class="title">
             <h1><i class="fas fa-book-open"></i>SP News</h1>
@@ -68,9 +66,8 @@
         </div>
 
 
-
         <div class="nav">
-            <nav>
+            <nav style="padding-bottom: 13px;">
                 <ul>
                     {% if user.business == 1 %}
                     <!--if user.business is present, we will add it to ur navbar-->
@@ -92,34 +89,41 @@
                     {% endif %} </ul>
 
             </nav>
+
+            <hr size="1" style="margin-bottom: .75%;">
+
             <script>
-
-                function switchNewsFeed(data, category){
+                function switchNewsFeed(data, category) {
                     if ($('.newsfeed_table')) {
-                            $('.newsfeed_table tr').remove();
-                            console.log("children removed")
-                        }
-                        
-                        // Filter out the arrays with no elements
-                        var newsfeed_data = data.results.filter(e => e.length);
+                        $('.newsfeed_table tr').remove();
+                        console.log("children removed")
+                    }
 
-                        for (var preference = 0; preference < newsfeed_data.length; preference++){
-                            for (var article = 0; article < newsfeed_data[preference].length; article++){
-                                if (newsfeed_data[preference][article].category == category){
-                                    $(".newsfeed_table").append("<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" + 
-                                        newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] + "</tr>"
-                                        + "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr>" + "</td>" +
-                                        "<td>" + newsfeed_data[preference][article]['url'] + "</td>" + "</tr>");
-                                } 
-                             }
-                         }
+
+                    // style=height: 300px; width: 550px; margin-top: 2%; margin-bottom: -3%; filter: drop-shadow(5px 3.5px 2.5px #4f6999);
+
+                    // Filter out the arrays with no elements
+                    var newsfeed_data = data.results.filter(e => e.length);
+
+                    for (var preference = 0; preference < newsfeed_data.length; preference++) {
+                        for (var article = 0; article < newsfeed_data[preference].length; article++) {
+                            if (newsfeed_data[preference][article].category == category) {
+                                $(".newsfeed_table").append("<tr><td><img src = " + newsfeed_data[preference][article]['imageurl'] + " class = 'images_front' > </td></tr>" +
+                                    "<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" +
+                                    newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] + "</tr>" +
+                                    "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr class = 'last_row'>" +
+                                    "<td> From: " + newsfeed_data[preference][article]['author'] + "</td>" + "</tr>");
+                            }
+                        }
+                    }
                 }
+
 
                 $(".business").click(function() {
                     console.log("business button clicked")
 
                     $.getJSON("/newsfeed/{{session['user']}}", function(data) {
-    
+
                         switchNewsFeed(data, "business")
 
                     });
@@ -235,22 +239,22 @@
                             $('.newsfeed_table tr').remove();
                             console.log("children removed")
                         }
-                        
+
                         // Filter out the arrays with no elements
                         var newsfeed_data = data.results.filter(e => e.length);
 
 
                         categories = []
-                        for (var preference = 0; preference < newsfeed_data.length; preference++){
+                        for (var preference = 0; preference < newsfeed_data.length; preference++) {
                             categories.push(newsfeed_data[preference][0].category)
                         }
 
-                    
+
                         console.log(categories)
 
                         // Create an array that has the default preferences 
-                        preferences = ["business", "entertainment", "general", "health", "science", "sports", "technology"] 
-                        
+                        preferences = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+
                         // Create an empty 
                         const preferencesSet = new Set(preferences);
 
@@ -258,28 +262,25 @@
                         // to filter only those elements
                         // that need not to be deleted from the array
                         const keywords = categories.filter((category) => {
-                        // return those elements not in the preferencesSet
-                        return !preferencesSet.has(category);
+                            // return those elements not in the preferencesSet
+                            return !preferencesSet.has(category);
                         });
 
                         console.log(keywords)
 
 
-                        for (var preference = 0; preference < newsfeed_data.length; preference++){
-                            for (var article = 0; article < newsfeed_data[preference].length; article++){
-                                if (keywords.includes(newsfeed_data[preference][article].category)){
-                                    $(".newsfeed_table").append("<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" + 
-                                        newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] + "</tr>"
-                                        + "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr>" + "</td>" +
-                                        "<td>" + newsfeed_data[preference][article]['url'] + "</td>" + "</tr>");
-                                } 
-                             }
-                         }
+                        for (var preference = 0; preference < newsfeed_data.length; preference++) {
+                            for (var article = 0; article < newsfeed_data[preference].length; article++) {
+                                if (keywords.includes(newsfeed_data[preference][article].category)) {
+                                    $(".newsfeed_table").append("<tr><td><img src = " + newsfeed_data[preference][article]['imageurl'] + " class = 'images_front' > </td></tr>" + "<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" +
+                                        newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] + "</tr>" +
+                                        "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr class = 'last_row'>" +
+                                        "<td>From: " + newsfeed_data[preference][article]['author'] + "</td>" + "</tr>");
+                                }
+                            }
+                        }
                     });
                 });
-
-            
-
             </script>
             <!--
             <script>
@@ -307,6 +308,7 @@
         <div class="newsfeed_list">
             <center>
                 <table class="newsfeed_table">
+
                     <!--
                 <tr> tr = table row
                     <th>Article Title</th> (th = table header)
@@ -340,10 +342,10 @@
                                         console.log(data.results[i][i2]['category'])
                                         console.log(data.results[i][i2]['dateandtime'])
 
-                                        $(".newsfeed_table").append("<tr class = 'title_row'>" + "<td><u><a href =" + data.results[i][i2]['url'] + ">" + data.results[i][i2]['title'] + "</a></u></tr>" +
-                                            "<tr>" + "<td>" + data.results[i][i2]['category'] + "</tr>" + "<tr>" + "</td>" +
-                                            "<td>" + data.results[i][i2]['dateandtime'] + "</td>" + "</tr>" + "<tr>" + "</td>" +
-                                            "<td>" + data.results[i][i2]['url'] + "</td>" + "</tr>");
+                                        $(".newsfeed_table").append("<tr><td><img src = " + data.results[i][i2]['imageurl'] + " class = 'images_front' > </td></tr>" + "<tr class = 'title_row'>" + "<td><u><a href =" + data.results[i][i2]['url'] + ">" + data.results[i][i2]['title'] +
+                                            "</a></u></tr>" + "<tr>" + "<td>" + data.results[i][i2]['category'] + "</tr>" + "<tr>" + "</td>" +
+                                            "<td>" + data.results[i][i2]['dateandtime'] + "</td>" + "</tr>" + "<tr class = 'last_row' >" +
+                                            "<td>From: " + data.results[i][i2]['author'] + "</td>" + "</tr>");
                                     } else {
 
                                         var table = $(".newsfeed_table")
