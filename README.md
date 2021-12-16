@@ -49,7 +49,8 @@ Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibade, and Brandon Morales.
 This project will be continously worked and improved on after submission date by:
 * Alan Diaz
 * Adam Asimolowo
-
+* Segun Ajibade
+* Brandon Moralse
 
 
 # README 
