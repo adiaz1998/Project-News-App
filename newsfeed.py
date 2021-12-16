@@ -44,7 +44,7 @@ def retrieveNewsFeed(username, db):
         if User.getUser(db, 1, preference):
             connection = db.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
-            query = "SELECT nf.author, nf.title, nf.url, nf.dateandtime, nf.imageurl, nf.category from newsfeed nf, users u WHERE nf.category = %s and u." + preference + " = 1 and u.user_id = %s"
+            query = "SELECT nf.pipeline_id, nf.author, nf.title, nf.url, nf.dateandtime, nf.imageurl, nf.category from newsfeed nf, users u WHERE nf.category = %s and u." + preference + " = 1 and u.user_id = %s"
             print(query)
             print(user.id)
             cursor.execute(query, (preference,user.id,))
@@ -60,7 +60,7 @@ def retrieveNewsFeed(username, db):
             for word in keyword: #we want to search for the category with the key term each iteration
                 connection = db.connect() #for user_id = 86, we'll make three connections
                 cursor = connection.cursor(pymysql.cursors.DictCursor)
-                query2 = "SELECT nf.author, nf.title, nf.url, nf.dateandtime, nf.imageurl, nf.category from newsfeed nf, users u WHERE nf.category = %s and u.user_id = %s"
+                query2 = "SELECT nf.pipeline_id, nf.author, nf.title, nf.url, nf.dateandtime, nf.imageurl, nf.category from newsfeed nf, users u WHERE nf.category = %s and u.user_id = %s"
                 cursor.execute(query2, (word, user.id,))
                 rows2 = cursor.fetchall()
                 UserPreference.append(rows2)

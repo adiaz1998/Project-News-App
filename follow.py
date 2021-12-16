@@ -52,6 +52,16 @@ def userFollowersList(current_user: object, db: object) -> object:
     return jsonify({'followers': followersList}), 200
 
 
+def numOfFollowers(current_user, db):
+    connection = db.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    query = "SELECT COUNT(u.username) from users u WHERE u.user_id IN (SELECT f.User FROM follow f WHERE f.UserFollow = %s);"
+    cursor.execute(query, (current_user))
+    num = cursor.fetchone()
+    connection.close()
+    return jsonify(amount=num), 200
+
+
 def verifyIfUserFollow(current_user, other_user, db):
     connection = db.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)

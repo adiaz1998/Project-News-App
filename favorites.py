@@ -7,7 +7,7 @@ def favoriteArticle(current_user, articleID, db):
     connection = db.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     query = "INSERT INTO favorites(userId, pipelineID, favorite_author, favorite_title, favorite_url, favorite_dateandtime, " \
-            "favorite_category) SELECT u.user_id, n.pipeline_id, n.author, n.title, n.url, n.dateandtime, n.category FROM newsfeed n, users u " \
+            "favorite_imageurl, favorite_category) SELECT u.user_id, n.pipeline_id, n.author, n.title, n.url, n.dateandtime, n.imageurl, n.category FROM newsfeed n, users u " \
             "where n.pipeline_id = %s and u.user_id = %s;"
     cursor.execute(query, (articleID, current_user,))
     connection.commit()
@@ -44,7 +44,7 @@ def verifyIfFavoriteExist(current_user, articleID, db):
 def getFavorites(current_user, db):
     connection = db.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    query = "SELECT u.username, f.favorite_author, f.favorite_title, f.favorite_url, f.favorite_dateandtime, f.favorite_category " \
+    query = "SELECT u.username, f.favorite_author, f.favorite_title, f.favorite_url, f.favorite_dateandtime, f.favorite_imageurl, f.favorite_category " \
             "from favorites f LEFT JOIN users u ON f.userID = u.user_id WHERE f.userID = %s or f.userID IN (SELECT f.UserFollow FROM " \
             "follow f WHERE f.User = %s) ORDER BY favorite_dateandtime DESC;"
     cursor.execute(query, (current_user,current_user,))

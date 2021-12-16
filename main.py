@@ -3,7 +3,8 @@ from flaskext.mysql import MySQL
 from user import registerUser, signIn, userProfile, forgotPassword, resetPassword, editProfile, changePassword, \
     getHomePage
 from newsfeed import retrieveNewsFeed
-from follow import retrieveUsers, followUser, unfollowUser, userFollowingList, userFollowersList, verifyIfUserFollow
+from follow import retrieveUsers, followUser, unfollowUser, userFollowingList, userFollowersList, numOfFollowers,\
+    verifyIfUserFollow
 from favorites import favoriteArticle, unfavoriteArticle, verifyIfFavoriteExist, getFavorites
 from __init__ import app
 
@@ -175,6 +176,12 @@ def verify_favorite(userID, articleID):
 @app.route("/<userID>/favorites", methods=["GET"])
 def get_favorites(userID):
     return getFavorites(userID, mysql)
+
+
+
+@app.route("/<userID>/numOfFollowers", methods=["GET"])
+def get_numOfFollowers(userID):
+    return numOfFollowers(userID, mysql)
 
 
 if __name__ == '__main__':

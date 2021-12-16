@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../static/css/style.css">
     <title>Homepage</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" />
@@ -38,6 +39,8 @@
                         <a href="http://127.0.0.1:5000/logout"><i class="fas fa-door-closed"></i>Log Out</a></li>
                     <li class="child_3"><a href="http://127.0.0.1:5000/edit_password.html">Change Password</a></li>
                     <li><a href="http://127.0.0.1:5000/profile/{{session['user']}}"><i class="fas fa-user "></i>My Account</a></li>
+                    <li><a href="http://127.0.0.1:5000/users.html"><i class="fas fa-users "></i>Users</a></li>
+
                 </ul>
             </header>
         </div>
@@ -55,7 +58,7 @@
                         Name: {{session['user']}}
                     </li>
                     <li>
-                        # of Followers:
+                        # of Followers: <span class="followerCount"></span>
                     </li>
                     <li>
                         Keywords: {{user.keywords}}
@@ -280,8 +283,8 @@
                                     $(".newsfeed_table").append("<tr><td><img src = " + newsfeed_data[preference][article]['imageurl'] + " class = 'images_front' > </td></tr>" + "<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" +
                                         newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] + "</tr>" +
                                         "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr class = 'last_row'>" +
-                                        "<td>From: " + newsfeed_data[preference][article]['author'] + "</td>" + "</tr> +
-                                         "<tr>" + "</td>" +
+                                        "<td>From: " + newsfeed_data[preference][article]['author'] + "</td>" + "</tr>" + 
+                                        "<tr>" + "</td>" +
                                         "<td>" + newsfeed_data[preference][article]['url'] + "</td>" + "</tr>" +
                                         "<td><button type='submit' class = 'favorite' id='favorite' value= " + newsfeed_data[preference][article]['pipeline_id'] +
                                             ">Favorite</button></td>" + "</tr>" + "</tr>" + "<tr>" + "</td>" +
@@ -309,7 +312,8 @@
                         console.log(favorites_data);
 
                         for (var article = 0; article < favorites_data.length; article++){
-                            $(".newsfeed_table").append("<tr class = 'title_row'>" + "<td><u><a href =" + favorites_data[article]['favorite_url'] + ">" +
+                            $(".newsfeed_table").append("<tr><td><img src = " + favorites_data[article]['favorite_imageurl'] + " class = 'images_front' > </td></tr>" +
+                                "<tr class = 'title_row'>" + "<td><u><a href =" + favorites_data[article]['favorite_url'] + ">" +
                                 favorites_data[article]['favorite_title'] + "</a></u></tr>" + "<tr>" + "<td>" + favorites_data[article]['favorite_category'] + "</tr>"
                                 + "<tr>" + "</td>" + "<td>" + favorites_data[article]['favorite_dateandtime'] + "</td>" + "</tr>" + "<tr>" + "</td>" +
                                 "<td>" + favorites_data[article]['favorite_author'] + "</td>" + "</tr>" + "</tr>" + "<tr>" + "</td>" +
@@ -450,7 +454,8 @@
 
                         for (var preference = 0; preference < newsfeed_data.length; preference++){
                             for (var article = 0; article < newsfeed_data[preference].length; article++){
-                                $(".newsfeed_table").append("<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" +
+                                $(".newsfeed_table").append("<tr><td><img src = " + newsfeed_data[preference][article]['imageurl'] + " class = 'images_front' > </td></tr>" +
+                                "<tr class = 'title_row'>" + "<td><u><a href =" + newsfeed_data[preference][article]['url'] + ">" +
                                     newsfeed_data[preference][article]['title'] + "</a></u></tr>" + "<tr>" + "<td>" + newsfeed_data[preference][article]['category'] +
                                     "</tr>" + "<tr>" + "</td>" + "<td>" + newsfeed_data[preference][article]['dateandtime'] + "</td>" + "</tr>" + "<tr>" + "</td>" +
                                     "<td>" + newsfeed_data[preference][article]['url'] + "</td>" + "</tr>" +
@@ -462,6 +467,20 @@
                         }
 
                     });
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: "http://127.0.0.1:5000/{{session['id']}}/numOfFollowers",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('.followerCount').append(data['amount']['COUNT(u.username)']);
+                    },
+
+                    error: function (errorMessage) {
+
+                        alert(errorMessage);
+                    }
                 });
 
                 // function fetchData(){
