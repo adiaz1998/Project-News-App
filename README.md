@@ -2,7 +2,7 @@
 Project for CS-490
 
 # Introduction
-![image](https://user-images.githubusercontent.com/64811750/146464459-f8dd0d71-5c28-4120-9be6-cbf754814860.png)
+![image](https://user-images.githubusercontent.com/64811750/146464643-7c09e060-3ab5-4ef4-ace7-381a1f5fe18b.png)
 
 SP News was developed for serving as a personal news app in which users from all parts of life can partake in viewing news articles of their preferenced categories throughout their day.
 
