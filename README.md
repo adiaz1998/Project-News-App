@@ -13,6 +13,10 @@ For those of you that do not read articles in one-go, fret not, users can favori
 
 Users can also follow other users who are utilizing the application, and also view which articles are the hottest at the moment.
 
+Users can input keywords to see articles of their favorite topics.
+
+Users can view images of articles without having to go to the article website.
+
 # Usage
 Example Usage (you can experiment yourself by opening the application and registering for an account here) 
 
