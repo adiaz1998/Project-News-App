@@ -405,7 +405,6 @@ input[type="email"] {
     font-size: 20px;
     opacity: 0.8;
     text-shadow: 2px 2px 4px #000000;
-    font-weight: bold;
 }
 
 .nav ul li a:hover {
@@ -417,12 +416,13 @@ input[type="email"] {
 /*Side Navbar CSS*/
 
 .navbar_side {
-    font-size: medium;
-    margin-right: 90%;
+    font-size: 15.5px;
+    /*margin-right: 90%;*/
     margin-left: 1.25%;
     height: auto;
     position: fixed;
-    padding-top: 1.5%;
+    padding-top: 4.35%;
+    padding-right: 90px;
 }
 
 .navbar_side_content img {
@@ -494,14 +494,14 @@ input[type="email"] {
 /*Newsfeed List CSS Code */
 
 .newsfeed_table {
-    border-spacing: 12px;
+    border-spacing: 7px;
     /*background-color: red;*/
-    padding-top: 2.25%;
+    padding-top: 1.25%;
     text-align: center;
 }
 
 .newsfeed_table tr {
-    padding-bottom: 2%;
+    padding-top: 6%;
 }
 
 .title_row {
@@ -514,9 +514,17 @@ input[type="email"] {
     text-shadow: 2px 2px 4px #000000;
 }
 
+.title_row td {
+    padding-top: .75%;
+}
+
 .title_row a {
     text-decoration: none;
     color: #fff;
+}
+
+.last_row td {
+    padding-bottom: 1.25%;
 }
 
 #bottom {
@@ -528,4 +536,12 @@ input[type="email"] {
 .footer {
     text-align: center;
     color: black;
+}
+
+.images_front {
+    height: 350px;
+    width: 650px;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    filter: drop-shadow(6px 3.5px 2.5px #4f6999);
 }
