@@ -4,6 +4,7 @@ from user import registerUser, signIn, userProfile, forgotPassword, resetPasswor
     getHomePage
 from newsfeed import retrieveNewsFeed
 from follow import retrieveUsers, followUser, unfollowUser, userFollowingList, userFollowersList, verifyIfUserFollow
+from favorites import favoriteArticle, unfavoriteArticle, verifyIfFavoriteExist, getFavorites
 from __init__ import app
 
 mysql = MySQL(app)
@@ -14,6 +15,7 @@ def index():
     if g.user:
         return getHomePage(g.user, mysql)
     return render_template("login-form.html")
+
 
 @app.route('/login-form.html')
 def login_form():
@@ -30,7 +32,7 @@ def homepage():
     if g.user:
         print(" \n\nAWFAFWAFAFWAFDWAFWAFWA \n\n\n\n LAWFAWFA" + str(g.user))
         return getHomePage(g.user, mysql)
-        #return render_template("homepage.html")
+        # return render_template("homepage.html")
     return redirect(url_for('index'))
 
 
@@ -153,6 +155,26 @@ def get_followersList(userID):
 @app.route("/profile/<userID>/follows/<userID2>", methods=['GET'])
 def verifyIfUserFollows(userID, userID2):
     return verifyIfUserFollow(userID, userID2, mysql)
+
+
+@app.route("/<userID>/favorite/<articleID>", methods=["POST"])
+def favorite_article(userID, articleID):
+    return favoriteArticle(userID, articleID, mysql)
+
+
+@app.route("/<userID>/unfavorite/<articleID>", methods=["DELETE"])
+def unfavorite_article(userID, articleID):
+    return unfavoriteArticle(userID, articleID, mysql)
+
+
+@app.route("/<userID>/favorites/<articleID>", methods=["GET"])
+def verify_favorite(userID, articleID):
+    return verifyIfFavoriteExist(userID, articleID, mysql)
+
+
+@app.route("/<userID>/favorites", methods=["GET"])
+def get_favorites(userID):
+    return getFavorites(userID, mysql)
 
 
 if __name__ == '__main__':
