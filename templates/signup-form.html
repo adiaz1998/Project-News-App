@@ -36,7 +36,9 @@
         <div class="form-wrap">
             <h1>SP News</h1>
             <p>Create your SP News account</p>
-            <form action="http://127.0.0.1:5000/register" method="post">
+
+            <form action="/register" method="post">
+
                 <div class="form-group">
                     <label for="first-name">First Name</label>
                     <input type="text" name="firstName" id="first-name" />
@@ -54,6 +56,9 @@
                     <input type="email" name="email" id="email" />
                 </div>
 
+                <div class="email_validator_text">
+                    <p>Invalid Email Address</p>
+                </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" minlength="8" />
@@ -66,7 +71,7 @@
 
                 <div class="confirm_password">
                     <p>
-                        ERROR: PASSWORDS DO NOT MATCH
+                        Error: Passwords do not match
                     </p>
                 </div>
                 <div class="strong_password_tip">
@@ -89,12 +94,56 @@
                         <span></span>
                     </div>
 
+                    </div>
+
+                <div class="article_form" style = "/*background-color: red;*/ height: 190px;">
+                    <h4 style="text-align: center;">Article Preferences</h4>
+                    <h6 style="text-align: center;">(Select all that apply)</h6>
+
+                    <div class="article_elements">
+                        <input type="checkbox" name="business_checkbox" id="business_checkbox">
+                        <label for="business_checkbox">Business</label><br>
+
+                        <input type="checkbox" name="entertainment_checkbox" id="entertainment_checkbox">
+                        <label for="entertainment_checkbox">Entertainment</label><br>
+
+                        <input type="checkbox" name="general_checkbox" id="general_checkbox">
+                        <label for="general_checkbox">General</label><br>
+
+                        <input type="checkbox" name="technology_checkbox" id="technology_checkbox">
+                        <label for="technology_checkbox">Technology</label><br>
+                    </div>
+
+                    <div class="article_elements_right">
+                        <input type="checkbox" name="health_checkbox" id="health_checkbox">
+                        <label for="health_checkbox">Health</label><br>
+
+                        <input type="checkbox" name="science_checkbox" id="science_checkbox">
+                        <label for="science_checkbox">Science</label><br>
+
+                        <input type="checkbox" name="sports_checkbox" id="sports_checkbox">
+                        <label for="sports_checkbox">Sports</label><br>
+
+                    </div>
+
+                    
                 </div>
 
+                <div class = "form-group">
+                    <label for="keywords">Keywords</label>
+                    <input type="text" name="keywords" id="keywords"/>
+                </div>
+
+                <!--<div class="form-group">
+                    <label for="keyword">Keywords</label>
+                    <input type="text" name="keyword" id="keyword" />
+                </div>!-->
 
                 <button type="submit" class="btn">Sign Up</button>
 
-                <p>{{ data }}</p>
+                <div>
+                    <p style="font-weight: bold;">{{ data }}</p>
+                </div>
 
                 <p class="bottom-text">
                     By clicking the Sign Up button, you agree to our

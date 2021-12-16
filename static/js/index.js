@@ -1,6 +1,3 @@
-console.log("testing connection between server and client")
-
-
 var toggle_button = document.querySelector(".form-group .password_toggler")
 var toggle_button_2 = document.querySelector(".form-group .password_toggler_reg")
 var toggle_button_3 = document.querySelector(".form-group .password_toggler_2")
@@ -19,13 +16,10 @@ if (toggle_button) {
         } else {
             console.log("Show password clicked")
             document.getElementById('password_sign_in').setAttribute("type", "text")
-
-            // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+                // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
             el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
         }
-
     }
-
 }
 
 toggle_button_2.addEventListener("click", function() {
@@ -61,11 +55,34 @@ function toggle_on_off() {
 
 }
 
+//function for getting passwordStrength
+function getPasswordStrength(password) {
+    toggle_button_3.addEventListener("click", toggle_on_off)
+        //toggle_button2.addEventListener("click", toggle_on_off(".form-group", ".password_toggler_reg"))
+    function toggle_on_off() {
+        let el = toggle_button_3;
+        if (el.classList.contains("active")) {
+            console.log("Hide password clicked")
+            document.getElementById('password2').setAttribute("type", "password")
+            el.classList.remove("active") //remove a class list from the element (.form-group .password_toggler)
+        } else {
+            console.log("Show password clicked")
+            document.getElementById('password2').setAttribute("type", "text")
+
+            // document.querySelector(".form-group #password_sign_in").setAttribute("type", "text")
+            el.classList.add("active") //creating a class list for the element (.form-group .password_toggler)
+        }
+    }
+}
+
 
 //function for getting passwordStrength
 function getPasswordStrength(password) {
     let s = 0;
 
+    if (password.length == 0) {
+        s = 0;
+    }
     if (password.length > 4) {
         s++;
     }
@@ -110,23 +127,32 @@ if (sign_up_password_box) {
         let password = e.target.value;
         let strength = getPasswordStrength(password)
         let passwordStrengthSpan = document.querySelectorAll(".form-group .password_strength span")
-        strength = Math.max(strength, 1)
+        strength2 = Math.max(strength, 1)
         passwordStrengthSpan[1].style.width = strength * 20 + "%";
 
-        if (strength < 2) {
+        if (strength == 0) {
+            passwordStrengthSpan[0].innerText = "Strength: Neutral";
+            passwordStrengthSpan[1].style.color = "#111";
+            passwordStrengthSpan[1].style.background = "#d13636";
+            document.querySelector('.btn').style.display = "none";
+        } else if (strength2 > 0 && strength2 < 2) {
             passwordStrengthSpan[0].innerText = "Strength: Weak";
             passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#d13636";
-        } else if (strength >= 2 && strength <= 4) {
+            document.querySelector('.btn').style.display = "none";
+        } else if (strength2 >= 2 && strength2 <= 4) {
 
             passwordStrengthSpan[0].innerText = "Strength: Medium";
-            passwordStrengthSpan[1].style.color = "#111"
+            passwordStrengthSpan[1].style.color = "#111";
             passwordStrengthSpan[1].style.background = "#ffff00";
+            document.querySelector('.btn').style.display = "none";
 
         } else {
             passwordStrengthSpan[0].innerText = "Strength: Strong";
-            passwordStrengthSpan[1].style.color = "#111"
-            passwordStrengthSpan[1].style.background = "#008000"
+            passwordStrengthSpan[1].style.color = "#111";
+            passwordStrengthSpan[1].style.background = "#008000";
+            document.querySelector('.btn').style.display = "block";
+
         }
     });
 }
@@ -153,6 +179,7 @@ if (sign_up_password_box) {
 //document.querySelector(".form-group #password").addEventListener("mouseout", get_password);
 
 
+sign_up_password_box.addEventListener("keyup", check_for_similar_passwords)
 sign_up_password_box_2.addEventListener("keyup", check_for_similar_passwords)
 
 function check_for_similar_passwords() {
@@ -179,6 +206,7 @@ function check_for_similar_passwords() {
         if (document.querySelector('.btn').disabled == true) {
             document.querySelector('.btn').style.display = "none";
 
+            //aa
             //console.log(";p;")
             //document.querySelector('.btn').addEventListener("mouseover", displayError)
 
@@ -190,4 +218,26 @@ function check_for_similar_passwords() {
 }
 
 
+//code for validating email
 
+var email_box = document.querySelector(".form-group #email")
+if (email_box) {
+    email_box.addEventListener("keyup", function(e) {
+        const email_content = document.getElementById('email').value
+
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email_content)) {
+            document.querySelector(".email_validator_text").style.display = "none";
+            document.querySelector('.btn').style.display = "block";
+            console.log("valid email address")
+        } else {
+            console.log("invalid email address")
+            document.querySelector(".email_validator_text").style.display = "block";
+            document.querySelector('.btn').style.display = "none";
+        }
+        console.log(email_content)
+    });
+
+}
+
+
+var sign_up_password_box = document.querySelector(".form-group #password");
