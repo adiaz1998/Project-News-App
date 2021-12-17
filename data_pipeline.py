@@ -1,5 +1,5 @@
-#Updates twice a day
-#Need to have this pipeline running in docker
+#Updates once a day
+#Reminder: Need to have this pipeline running in docker in the future
 
 #Written by Adam Asimolowo
 
@@ -30,13 +30,12 @@ def getEverything(keyword):
     return all_articles
 
 #PSUEDECODE
-#split the keywords given by a user and add them into a list
-#afterwards, loop through that list and use the getEverything function for each of those keywords
+
+#STEP 1: split the keywords given by a user and add them into a list
+#STEP 2: afterwards, loop through that list and use the getEverything function for each of those keywords
 #getEverything("bitcoin")
-
-#loop through all the users currently within the database and get their keywords; once u get their keywords, save those keywords in the newsfeed table
-
-#query through all users in the users table list and retrieve their keywords
+#STEP 3: loop through all the users currently within the database and get their keywords; once u get their keywords, save those keywords in the newsfeed table
+#STEP 4: query through all users in the users table list and retrieve their keywords
 
 query1 = "SELECT keywords FROM users"
 
@@ -69,9 +68,7 @@ def getKeyWords(db):
                     else:
                         print("User has no keywords.. therefore we will not add it to the keyword article search to save resources")
             print(keywords)
-            connection.commit()
-
-                        #for i = 0, i <= 2400000, i+= 2200000 #will run this script twice a day
+            connection.commit()   
     elif not connection:
         print("ERROR: connection not made...")
 
@@ -132,15 +129,6 @@ def executeKeyWords():
     return keywords_authors, keywords_urls, keywords_date_time, keywords_title, keywords_image_urls, keywords_category
     
             
-           
-
-print(sum)
-#print(articles)
-pp = executeKeyWords()
-print(pp)
-print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-
-
 def getTopHeadLines(cat):
     top_headlines = newsapi.get_top_headlines(#q='bitcoin',
                                             category=cat,
@@ -191,6 +179,7 @@ def getHeadlineProperties(var, cat):
 
     return authors, urls, date_time, title, image_urls, category
 
+
 properties_business = getHeadlineProperties(getTopHeadLines('business'), 'business')
 properties_technology = getHeadlineProperties(getTopHeadLines('technology'), 'technology')
 properties_general = getHeadlineProperties(getTopHeadLines('general'), 'general')
@@ -200,7 +189,6 @@ properties_sports = getHeadlineProperties(getTopHeadLines('sports'), 'sports')
 properties_entertainment = getHeadlineProperties(getTopHeadLines('entertainment'), 'entertainment')
 properties_keywords = executeKeyWords()
 
-print(properties_entertainment)
 
 def getLengthArticles(var):
 
@@ -208,25 +196,21 @@ def getLengthArticles(var):
         if item == "totalResults":
             print(value)
             return value
-
-#ok = json.dumps(getTopHeadLines('technology'), indent=4)
-#print(ok)
-
-#print("\n\n\n")
+        
 
 #create COLUMNS FOR EACH PROPERTY; EXAMPLE: DATAFRAMES
 def convertPropertiesToDF(properties_cat):
     
     i = 0
     data = {'authors': properties_cat[i] , 'urls': properties_cat[i+1] , 'date_time': properties_cat[i+2] , 'title': properties_cat[i+3] , 'image_urls': properties_cat[i+4], 'category': properties_cat[i+5]}
+    
     if data:
-
         dataFrame = pd.DataFrame(data)
         print("\n")
         print(dataFrame)
-
+        
         return dataFrame
-
+    
     else:
         print("data not found")
     
@@ -240,6 +224,14 @@ print("\n\n\n")
 
 
 article_preference_dictionary = {
+    
+    #1 = business
+    #2 = technology
+    #3 = general
+    #4 = sports
+    #5 = health
+    #6 = science
+    #7 = entertainment
 
     1 : convertPropertiesToDF(properties_business),
     2 : convertPropertiesToDF(properties_technology),
@@ -250,13 +242,6 @@ article_preference_dictionary = {
     7 : convertPropertiesToDF(properties_entertainment),
     8 : convertPropertiesToDF(properties_keywords)
 
-    #1 = business
-    #2 = technology
-    #3 = general
-    #4 = sports
-    #5 = health
-    #6 = science
-    #7 = entertainment
 
 }
 
@@ -320,8 +305,6 @@ def insert_newsfeed_data(db):
                         print("imported into database")
 
                     connection.commit()
-
-                    #for i = 0, i <= 2400000, i+= 2200000 #will run this script twice a day
 
     elif not connection:
         print("ERROR: connection not made...")
