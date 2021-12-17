@@ -54,11 +54,11 @@ Most of you will already have steps 1 and 2 completed--if that is the case, you 
 
 Special thanks to Alan Diaz, Adam Asimolowo, Segun Ajibade, and Brandon Morales.
 
-This project will be continously worked and improved on after submission date by:
+This project will be continously improved on after submission date by:
 * Alan Diaz
 * Adam Asimolowo
 * Segun Ajibade
-* Brandon Moralse
+* Brandon Morales
 
 
 # README 
