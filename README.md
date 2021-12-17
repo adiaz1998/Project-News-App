@@ -21,7 +21,7 @@ For those of you that do not read articles in one-go, fret not, users can favori
 
 ### How to run the application (temporary option until application can be hosted through port 80 on the web)
 * Step 1: Install any IDE of choice (pycharm or VS code preferably)
-* Step 2: Install any version of Python 3.8+
+* Step 2: Install any versions of Python 3.8 and up
 * Step 3. Open up your IDE and ensure you have Python selected as your interpreter
 * Step 4. Once you've opened your IDE, make sure you can view your terminal. Type in 'py -m venv virtualenvironment'. You have now installed an virtual environment for development, and can clone the 'main' branch above into your local drive for development.
 * Step 6. Install all the packages listed within the 'requirements.txt' file to your virtual environment. 
