@@ -19,7 +19,7 @@ SP News utilizes an API from newsfeed.api for content delivery. Our application 
 
 # Usage
 
-### How to run the application (temporary option until application can be hosted through port 80 on the web)
+### How to run the application (temporary option until application can be hosted)
 * Step 1: Install any IDE of choice (pycharm or VS code preferably)
 * Step 2: Install any versions of Python 3.8 and up
 * Step 3. Open up your IDE and ensure you have Python selected as your interpreter
